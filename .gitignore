@@ -91,6 +91,3 @@ ENV/
 
 # pycharm
 .idea/
-
-# virtualenv folder
-virtualenv/
