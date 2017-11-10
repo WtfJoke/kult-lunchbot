@@ -1,4 +1,4 @@
-from urllib.request import urlopen
+from urllib.request import urlopen, urlretrieve
 from bs4 import BeautifulSoup, SoupStrainer
 
 
@@ -22,6 +22,11 @@ def extract_menu_card_link():
     return menu_card_link
 
 
+def download_pdf(link_to_pdf):
+    result = urlretrieve(link_to_pdf, "current_menu.pdf")
+
+
 # starter method
 if __name__ == "__main__":
-    print(extract_menu_card_link())
+    pdf_link = extract_menu_card_link()
+    download_pdf(pdf_link)
