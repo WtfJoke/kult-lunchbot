@@ -47,12 +47,19 @@ def analyze_menu_text(text):
     weekday = ''
     menu_number = 0
     menu_text = ''
+    date = ''
+    daily_menu = DailyMenu()
 
     for line in text_lines:
         if 'KW' in line:
             menu.set_title(line)
-        elif any(item in line for item in WeeklyMenu.week_days): # begins line with monday-friday
-            weekday = line
+        elif any(item in line for item in WeeklyMenu.week_days):  # begins line with monday-friday
+            match_day = re.compile('(\\w+)\\s(\\d\\d\.\\d\\d\\.\\d\\d\\d\\d)').match(line)  # match 'Montag 06.11.2017'
+            if match_day:
+                weekday = match_day.group(1)
+                date = match_day.group(2)
+                daily_menu.set_weekday(weekday)
+                daily_menu.set_date(date)
         elif 'Menü' in line:
             menu_number = extract_menu_number(line)
             menu_text = line
@@ -64,11 +71,15 @@ def analyze_menu_text(text):
             #else: # fallback
             #    menu_text = line
 
-        if weekday and menu_number and menu_text: # if all information present create menu item
-            item = MenuItem(weekday, menu_number, menu_text)
-            menu.add_menu_item(item)
+        if weekday and date and menu_number and menu_text:  # if all information present create menu item
+            item = MenuItem(weekday, date, menu_number, menu_text)
+            daily_menu.add_menu_item(item)
             menu_number = 0
             menu_text = ''
+
+        if daily_menu.is_complete():
+            menu.add_daily_menu(daily_menu)
+            daily_menu = DailyMenu()
 
     return str(menu)
 
