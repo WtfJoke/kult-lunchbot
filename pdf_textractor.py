@@ -3,6 +3,7 @@ from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
 from io import StringIO
+import os
 
 
 def convert_pdf_to_txt(path):
@@ -26,5 +27,6 @@ def create_text_converter(resource_manager, string_writer):
     return TextConverter(resource_manager, string_writer, codec=codec, laparams=LAParams())
 
 
-text = convert_pdf_to_txt('card.pdf')
+pdf = os.path.join('menu', 'card.pdf')
+text = convert_pdf_to_txt(pdf)
 print(text)
