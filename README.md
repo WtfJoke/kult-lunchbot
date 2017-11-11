@@ -21,3 +21,6 @@ To install requirements execute:
 python lunchbot.py
 
 
+## Add to your slack channel
+[Add me](https://slack.com/oauth/authorize?scope=bot&client_id=269973088388.270476032388)
+
