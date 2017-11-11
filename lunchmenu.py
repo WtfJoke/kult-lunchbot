@@ -1,4 +1,6 @@
 class WeeklyMenu:
+    week_days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
+
     def __init__(self):
         self.items = []
         self.title = ''
@@ -34,7 +36,7 @@ class DailyMenu:
 
 class MenuItem:
 
-    week_days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
+
 
     def __init__(self, weekday, menu_number, menu_text):
         self.weekday = weekday
