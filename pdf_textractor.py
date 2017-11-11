@@ -81,7 +81,7 @@ def analyze_menu_text(text):
             menu.add_daily_menu(daily_menu)
             daily_menu = DailyMenu()
 
-    return str(menu)
+    return menu
 
 
 def match_menu_line(menu_text_line):
