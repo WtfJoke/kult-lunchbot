@@ -1,9 +1,12 @@
+from menu import Menu
+from menuitem import MenuItem
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
 from io import StringIO
 import os
+import re
 
 
 def convert_pdf_to_txt(path):
@@ -28,8 +31,59 @@ def create_text_converter(resource_manager, string_writer):
 
 
 def get_menu_text(menu_filename):
+    return str(get_menu(menu_filename))
+
+
+def get_menu(menu_filename):
     pdf = os.path.join('menu', menu_filename)
-    text = convert_pdf_to_txt(pdf)
-    return text
+    menu = analyze_menu_text(convert_pdf_to_txt(pdf))
+    return menu
+
+
+def analyze_menu_text(text):
+    text_lines = text.split('\n')
+    text_lines = list(filter(None, text_lines)) # filter empty values
+
+    menu = Menu()
+    weekday = ''
+    menu_number = 0
+    menu_text = ''
+
+    for line in text_lines:
+        if 'KW' in line:
+            menu.set_title(line)
+        elif any(item in line for item in MenuItem.week_days): # begins line with monday-friday
+            weekday = line
+        elif 'Menü' in line:
+            menu_number = extract_menu_number(line)
+            menu_text = line
+
+            # TODO: decide whether menu_text should be complete line or just the food
+            #replace_string = match_menu_line(line)
+            #if replace_string: # menu X can be replaced, replace it
+            #    menu_text = line.replace(replace_string.group(), '').strip()
+            #else: # fallback
+            #    menu_text = line
+
+        if weekday and menu_number and menu_text: # if all information present create menu item
+            item = MenuItem(weekday, menu_number, menu_text)
+            menu.add_menu_item(item)
+            menu_number = 0
+            menu_text = ''
+
+    return str(menu)
+
+
+def match_menu_line(menu_text_line):
+    matcher = re.compile('Menü\\s(\\d)').match(menu_text_line)
+    return matcher
+
+
+def extract_menu_number(menu_text_line):
+    menu_number = 0
+    matcher = match_menu_line(menu_text_line)
+    if matcher:
+        menu_number = matcher.group(1)
+    return menu_number
 
 print(get_menu_text('card.pdf'))
