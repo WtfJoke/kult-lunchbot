@@ -15,6 +15,12 @@ class WeeklyMenu:
     def get_daily_menus(self):
         return self.daily_menus
 
+    def get_daily_menu(self, weekday):
+        for daily_menu in self.get_daily_menus():
+            if daily_menu.get_weekday() == weekday:
+                return daily_menu
+        return None
+
     def get_items(self):
         return self.items
 
@@ -38,6 +44,9 @@ class DailyMenu:
         self.weekday = ''
         self.date = ''
         self.menus = []
+        self.menu1 = None
+        self.menu2 = None
+        self.menu3 = None
 
     def get_weekday(self):
         return self.weekday
@@ -52,10 +61,29 @@ class DailyMenu:
         self.date = date
 
     def add_menu_item(self, menu_item):
-        self.menus.append(menu_item)
+        number = menu_item.get_menu_number()
+        if number == 1:
+            self.menu1 = menu_item
+        elif number == 2:
+            self.menu2 = menu_item
+        elif number == 3:
+            self.menu3 = menu_item
+        else:
+            print('Menu unknown number' + str(menu_item))
+
+        self.get_menu_items(menu_item)
 
     def get_menu_items(self):
         return self.menus
+
+    def get_menu_one(self):
+        return self.menu1
+
+    def get_menu_two(self):
+        return self.menu2
+
+    def get_menu_three(self):
+        return self.menu3
 
     def is_complete(self):
         return len(self.menus) == 3
