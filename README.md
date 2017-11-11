@@ -18,6 +18,6 @@ To install requirements execute:
 
 
 ## Execution
-python scraper.py
+python lunchbot.py
 
 
