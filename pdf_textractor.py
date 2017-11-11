@@ -51,7 +51,7 @@ def analyze_menu_text(text):
     for line in text_lines:
         if 'KW' in line:
             menu.set_title(line)
-        elif any(item in line for item in MenuItem.week_days): # begins line with monday-friday
+        elif any(item in line for item in WeeklyMenu.week_days): # begins line with monday-friday
             weekday = line
         elif 'Menü' in line:
             menu_number = extract_menu_number(line)
