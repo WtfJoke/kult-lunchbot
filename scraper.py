@@ -6,6 +6,10 @@ import os
 URL = "http://wtz-tagungszentrum.de/restaurants/"
 
 
+def get_pdf():
+    return download_pdf(extract_menu_card_link())
+
+
 def extract_menu_card_link():
     page = urlopen(URL)
 
@@ -38,10 +42,6 @@ def get_monday_date():
     today = datetime.date.today()
     last_monday = today - datetime.timedelta(days=today.weekday())
     return last_monday.strftime('%d_%m')
-
-
-def get_pdf():
-    return download_pdf(extract_menu_card_link())
 
 # starter method
 if __name__ == "__main__":
