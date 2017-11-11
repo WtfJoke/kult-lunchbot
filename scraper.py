@@ -1,6 +1,7 @@
 from urllib.request import urlopen, urlretrieve
 from bs4 import BeautifulSoup, SoupStrainer
-
+import datetime
+import os
 
 URL = "http://wtz-tagungszentrum.de/restaurants/"
 
@@ -23,10 +24,25 @@ def extract_menu_card_link():
 
 
 def download_pdf(link_to_pdf):
-    result = urlretrieve(link_to_pdf, "current_menu.pdf")
+    last_monday = get_monday_date()
+    filename = 'menu_' + last_monday + '.pdf'
+    file = os.path.join('menu', filename)
+    if not os.path.exists(file):
+        print('Downloading pdf from ' + link_to_pdf)
+        result = urlretrieve(link_to_pdf, file)
+        # TODO: Better exception handling
+    return filename
 
+
+def get_monday_date():
+    today = datetime.date.today()
+    last_monday = today - datetime.timedelta(days=today.weekday())
+    return last_monday.strftime('%d_%m')
+
+
+def get_pdf():
+    return download_pdf(extract_menu_card_link())
 
 # starter method
 if __name__ == "__main__":
-    pdf_link = extract_menu_card_link()
-    download_pdf(pdf_link)
+    get_pdf()
