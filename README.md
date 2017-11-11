@@ -1,4 +1,4 @@
-# wtz-lunchbot
+# kult-lunchbot
 
 ## Overview
 This projects aims to scrape the [WTZ-Homepage](http://wtz-tagungszentrum.de) for current lunch menu.
