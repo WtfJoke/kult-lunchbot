@@ -18,9 +18,15 @@ class WeeklyMenu:
     def get_daily_menus(self):
         return self.daily_menus
 
-    def get_daily_menu(self, weekday):
+    def get_daily_menu_by_weekday(self, weekday):
         for daily_menu in self.get_daily_menus():
             if daily_menu.get_weekday() == weekday.value:
+                return daily_menu
+        return None
+
+    def get_daily_menu_by_date(self, date):
+        for daily_menu in self.get_daily_menus():
+            if daily_menu.get_date() == date:
                 return daily_menu
         return None
 
