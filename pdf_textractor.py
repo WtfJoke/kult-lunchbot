@@ -27,6 +27,9 @@ def create_text_converter(resource_manager, string_writer):
     return TextConverter(resource_manager, string_writer, codec=codec, laparams=LAParams())
 
 
-pdf = os.path.join('menu', 'card.pdf')
-text = convert_pdf_to_txt(pdf)
-print(text)
+def get_menu_text(menu_filename):
+    pdf = os.path.join('menu', menu_filename)
+    text = convert_pdf_to_txt(pdf)
+    return text
+
+print(get_menu_text('card.pdf'))
