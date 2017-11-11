@@ -1,3 +1,6 @@
+from enum import Enum
+
+
 class WeeklyMenu:
     week_days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
 
@@ -17,7 +20,7 @@ class WeeklyMenu:
 
     def get_daily_menu(self, weekday):
         for daily_menu in self.get_daily_menus():
-            if daily_menu.get_weekday() == weekday:
+            if daily_menu.get_weekday() == weekday.value:
                 return daily_menu
         return None
 
@@ -71,7 +74,7 @@ class DailyMenu:
         else:
             print('Menu unknown number' + str(menu_item))
 
-        self.get_menu_items(menu_item)
+        self.menus.append(menu_item)
 
     def get_menu_items(self):
         return self.menus
@@ -90,9 +93,9 @@ class DailyMenu:
 
     def __str__(self):
         daily_menu = self.weekday + ' - ' + self.date + '\n'
-
-        for menu_item in self.get_menu_items():
-            daily_menu += menu_item.get_menu() + '\n'
+        daily_menu += self.get_menu_one().get_menu() + '\n'
+        daily_menu += self.get_menu_two().get_menu() + '\n'
+        daily_menu += self.get_menu_three().get_menu() + '\n'
 
         return daily_menu
 
@@ -100,9 +103,9 @@ class DailyMenu:
 class MenuItem:
 
     def __init__(self, weekday, date, menu_number, menu_text):
-        self.weekday = weekday
+        self.weekday = weekday.strip()
         self.date = date
-        self.menu_number = menu_number
+        self.menu_number = int(menu_number)
         self.menu_text = menu_text
 
     def get_week_day(self):
@@ -119,3 +122,11 @@ class MenuItem:
 
     def __str__(self):
         return self.weekday + ' - ' + self.menu_text
+
+
+class Days(Enum):
+    MONDAY = 'Montag'
+    TUESDAY = 'Dienstag'
+    WEDNESDAY = 'Mittwoch'
+    THURSDAY = 'Donnerstag'
+    FRIDAY = 'Freitag'
