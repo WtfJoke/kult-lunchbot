@@ -1,5 +1,4 @@
-from menu import Menu
-from menuitem import MenuItem
+from lunchmenu import WeeklyMenu, DailyMenu, MenuItem
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
@@ -44,7 +43,7 @@ def analyze_menu_text(text):
     text_lines = text.split('\n')
     text_lines = list(filter(None, text_lines)) # filter empty values
 
-    menu = Menu()
+    menu = WeeklyMenu()
     weekday = ''
     menu_number = 0
     menu_text = ''
@@ -86,4 +85,5 @@ def extract_menu_number(menu_text_line):
         menu_number = matcher.group(1)
     return menu_number
 
-print(get_menu_text('card.pdf'))
+if __name__ == "__main__":
+    print(get_menu_text('card.pdf'))
