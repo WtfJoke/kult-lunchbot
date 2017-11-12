@@ -69,13 +69,13 @@ def _event_handler(event_type, slack_event):
         if duplicate_message:
             return make_response("Already answered", 200)
         analyzer = KeywordAnalyzer(message).analyze()
+        pyBot.append_message(key)
         if is_not_bot_user and analyzer.is_triggered():
             if analyzer.is_today():
                 menu_text = lunchbot.get_menu()
             else:
                 menu_text = lunchbot.get_menu_by_weekday(analyzer.get_day())
             pyBot.send_message(menu_text, channel, team_id)
-            pyBot.processed_message(key)
             return make_response("Posted food into channel", 200)
 
     # ============= Event Type Not Found! ============= #

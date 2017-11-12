@@ -92,7 +92,7 @@ class Bot(object):
     def get_messages(self):
         return self.messages
 
-    def processed_message(self, message_key):
+    def append_message(self, message_key):
         self.messages.append(message_key)
 
     def get_client(self, team_id):
