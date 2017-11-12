@@ -4,22 +4,32 @@ import datetime
 import slack_sender
 
 
+def get_menu(date=datetime.date.today().strftime('%d_%m')):
+    pdf = scraper.get_pdf()
+    menu = pdf_textractor.get_menu(pdf)
+    daily_menu = menu.get_daily_menu_by_date(date)
+    menu_text = ''
+    if daily_menu:
+        menu_text = str(daily_menu)
+    else:
+        last_menu = menu.get_daily_menus()[len(menu.get_daily_menus()) - 1]
+        if last_menu:
+            menu_text = 'Sorry ich kann die Menüs von {} nicht finden'.format(str(date)) + '\n'
+            menu_text += "Hier ist das stattdessen das letzte Menü: \n"
+            menu_text += str(last_menu)
+        else:
+            menu_text = "Fehler: Keine Menüs vorhanden"
+
+    return menu_text
+
+
 # starter method
 if __name__ == "__main__":
     pdf = scraper.get_pdf()
     menu = pdf_textractor.get_menu(pdf)
     today = datetime.date.today().strftime('%d_%m')
     daily_menu = menu.get_daily_menu_by_date(today)
-    if daily_menu:
-        slack_sender.send_message(str(daily_menu))
-        print(str(daily_menu))
-    else:
-        print('Sorry, cant get the daily menu of today: ' + datetime.date.today().strftime('%A %d.%m'))
-        print('Here is the last available menu:')
-        last_menu = menu.get_daily_menus()[len(menu.get_daily_menus()) - 1]
-        print(str(last_menu))
-        slack_sender.send_message(str(last_menu))
+    slack_sender.send_message(get_menu())
 
-    # print(str(menu.get_daily_menu_by_weekday(Days.THURSDAY)))
-    # print(str(menu.get_daily_menu_by_weekday(Days.MONDAY).get_menu_two()))
-    # print(str(menu))
+
+
