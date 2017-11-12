@@ -1,4 +1,6 @@
-# kult-lunchbot
+
+
+# kult-lunchbot <img src="https://raw.githubusercontent.com/WtfJoke/kult-lunchbot/master/resources/icons/lunchbot_icon_fullbackground.png" width="40" height="40"> 
 
 ## Overview
 This projects aims to scrape the [WTZ-Homepage](http://wtz-tagungszentrum.de) for current lunch menu.
@@ -15,12 +17,6 @@ To install requirements execute:
 
 `pip install -r requirements.txt`
 
-
-
-## Execution
-python lunchbot.py
-
-
 ## Add to your slack channel
-[![Add to Slack] (https://platform.slack-edge.com/img/add_to_slack.png)](https://slack.com/oauth/authorize?scope=bot&client_id=269973088388.270476032388)
+[![Add to Slack](https://platform.slack-edge.com/img/add_to_slack.png)](https://slack.com/oauth/authorize?scope=bot&client_id=269973088388.270476032388)
 
