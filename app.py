@@ -43,7 +43,7 @@ def _event_handler(event_type, slack_event):
     Parameters
     ----------
     event_type : str
-        type of event recieved from Slack
+        type of event received from Slack
     slack_event : dict
         JSON response from a Slack reaction event
 
@@ -57,13 +57,15 @@ def _event_handler(event_type, slack_event):
 
     if event_type == "message":
         event = slack_event["event"]
-        user_id = event.get("user")
+        subtype = event.get("subtype")
         message = event.get("text")
         channel = event.get("channel")
+        is_not_bot_user = subtype is None or subtype != 'bot_message'  # dont track bot messages
         # TODO improve detecting of keywords
-        if message.startswith("essen") or message.endswith("essen") or " essen" in message:
+
+        if is_not_bot_user and (message.startswith("essen") or message.endswith("essen") or " essen" in message):
             menu_text = lunchbot.get_menu()
-            pyBot.send_message(menu_text, channel)
+            pyBot.send_message(menu_text, channel, team_id)
             return make_response("Posted food into channel", 200)
 
     # ============= Event Type Not Found! ============= #
