@@ -14,4 +14,5 @@ def send_message(text, channel='#lunch'):
         print("something bad happened: " + response['error'])
 
 
-send_message("Hello from Lunchbot! :tada:")
+if __name__ == "__main__":
+    send_message("Hello from Lunchbot! :tada:")
