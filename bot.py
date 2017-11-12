@@ -37,17 +37,16 @@ authed_teams = {}
 class Bot(object):
     def __init__(self):
         super(Bot, self).__init__()
-        self.name = "Lunchbot"
-        self.emoji = ":robot_face:"
+        self.name = "Kult Lunchbot"
         # When we instantiate a new bot object, we can access the app
         # credentials we set earlier in our local development environment.
-        self.oauth = {"client_id": os.environ.get("CLIENT_ID"),
-                      "client_secret": os.environ.get("CLIENT_SECRET"),
+        self.oauth = {"client_id": "269973088388.270476032388",
+                      "client_secret": os.environ.get("SLACK_CLIENT_SECRET"),
                       # Scopes provide and limit permissions to what our app
                       # can access. It's important to use the most restricted
                       # scope that your app will need.
                       "scope": "bot"}
-        self.verification = os.environ.get("VERIFICATION_TOKEN")
+        self.verification = os.environ.get("SLACK_VERIFICATION_TOKEN")
 
         # NOTE: Python-slack requires a client connection to generate
         # an oauth token. We can connect to the client without authenticating
@@ -58,6 +57,7 @@ class Bot(object):
         # In a production envrionment you'll likely want to store this more
         # persistantly in  a database.
         self.messages = {}
+        self.is_logged_in = False
 
     def auth(self, code):
         """
@@ -85,8 +85,18 @@ class Bot(object):
         # we will save the team ID and bot tokens to the global
         # authed_teams object
         team_id = auth_response["team_id"]
-        authed_teams[team_id] = {"bot_token":
-                                 auth_response["bot"]["bot_access_token"]}
+        bot_token = auth_response["bot"]["bot_access_token"]
+        authed_teams[team_id] = {"bot_token": bot_token}
         # Then we'll reconnect to the Slack Client with the correct team's
         # bot token
-        self.client = SlackClient(authed_teams[team_id]["bot_token"])
+        self.client = SlackClient(bot_token)
+        self.is_logged_in = True
+
+    def send_message(self, message, channel):
+        post_message = self.client.api_call("chat.postMessage",
+                                            username=self.name,
+                                            channel=channel,
+                                            text=message
+                                            )
+
+        timestamp = post_message["ts"]
