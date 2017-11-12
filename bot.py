@@ -24,6 +24,7 @@
 Python Slack Bot class for use with the kult lunchbot app
 """
 import os
+import auth_token
 
 from slackclient import SlackClient
 
@@ -86,6 +87,7 @@ class Bot(object):
         # authed_teams object
         team_id = auth_response["team_id"]
         bot_token = auth_response["bot"]["bot_access_token"]
+        auth_token.store(team_id, bot_token)
         authed_teams[team_id] = {"bot_token": bot_token}
         # TODO: persist (hash/salt) tokens
         # Then we'll reconnect to the Slack Client with the correct team's
@@ -93,11 +95,14 @@ class Bot(object):
         self.client = SlackClient(bot_token)
         self.is_logged_in = True
 
-    def send_message(self, message, channel):
-        post_message = self.client.api_call("chat.postMessage",
-                                            username=self.name,
-                                            channel=channel,
-                                            text=message
-                                            )
+    def send_message(self, message, channel, team_id):
+        post_message = self.get_client(team_id).api_call("chat.postMessage",
+                                                        channel=channel,
+                                                        text=message)
 
         timestamp = post_message["ts"]
+
+    def get_client(self, team_id):
+        token = auth_token.get(team_id)
+        self.client = SlackClient(token)
+        return self.client
