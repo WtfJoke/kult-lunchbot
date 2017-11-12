@@ -4,6 +4,7 @@ import datetime
 import slack_sender
 
 
+# TODO - performance improve - extract text on each call - save extracted text
 def get_menu(date=datetime.date.today().strftime('%d_%m')):
     pdf = scraper.get_pdf()
     menu = pdf_textractor.get_menu(pdf)
