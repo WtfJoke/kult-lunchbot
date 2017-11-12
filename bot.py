@@ -87,6 +87,7 @@ class Bot(object):
         team_id = auth_response["team_id"]
         bot_token = auth_response["bot"]["bot_access_token"]
         authed_teams[team_id] = {"bot_token": bot_token}
+        # TODO: persist (hash/salt) tokens
         # Then we'll reconnect to the Slack Client with the correct team's
         # bot token
         self.client = SlackClient(bot_token)
