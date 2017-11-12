@@ -59,7 +59,7 @@ def _event_handler(event_type, slack_event):
         user_id = slack_event["event"].get("user")
         message = slack_event["event"].get("text")
         channel = slack_event["event"].get("channel")
-        if message.startswith("essen") or message.endswith("essen") or " essen" in message:
+        if message.startswith("essen") or message.endswith("essen") or " essen" in message: # TODO improve detecting of keywords
             menu_text = lunchbot.get_menu()
             pyBot.send_message(menu_text, channel)
             return make_response("Posted food into channel", 200)
