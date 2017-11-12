@@ -25,6 +25,7 @@ Python Slack Bot class for use with the kult lunchbot app
 """
 import os
 import auth_token
+import collections
 
 from slackclient import SlackClient
 
@@ -55,9 +56,9 @@ class Bot(object):
         # client with a valid OAuth token once we have one.
         self.client = SlackClient("")
         # We'll use this dictionary to store the state of each message object.
-        # In a production envrionment you'll likely want to store this more
-        # persistantly in  a database.
-        self.messages = {}
+        # In a production environment you'll likely want to store this more
+        # persistent in a database.
+        self.messages = collections.deque(maxlen=10)
         self.is_logged_in = False
 
     def auth(self, code):
@@ -89,7 +90,6 @@ class Bot(object):
         bot_token = auth_response["bot"]["bot_access_token"]
         auth_token.store(team_id, bot_token)
         authed_teams[team_id] = {"bot_token": bot_token}
-        # TODO: persist (hash/salt) tokens
         # Then we'll reconnect to the Slack Client with the correct team's
         # bot token
         self.client = SlackClient(bot_token)
@@ -101,6 +101,12 @@ class Bot(object):
                                                         text=message)
 
         timestamp = post_message["ts"]
+
+    def get_messages(self):
+        return self.messages
+
+    def processed_message(self, message_key):
+        self.messages.append(message_key)
 
     def get_client(self, team_id):
         token = auth_token.get(team_id)
