@@ -27,6 +27,7 @@ A routing layer for the onboarding bot tutorial built using
 import json
 import bot
 import lunchbot
+from lunchmenu import KeywordAnalyzer
 from flask import Flask, request, make_response, render_template
 
 pyBot = bot.Bot()
@@ -67,9 +68,12 @@ def _event_handler(event_type, slack_event):
         duplicate_message = key in list(pyBot.get_messages())
         if duplicate_message:
             return make_response("Already answered", 200)
-        if is_not_bot_user and (message.startswith("essen") or message.endswith("essen") or " essen" in message):
-            # TODO improve detecting of keywords
-            menu_text = lunchbot.get_menu()
+        analyzer = KeywordAnalyzer(message).analyze()
+        if is_not_bot_user and analyzer.is_triggered():
+            if analyzer.is_today():
+                menu_text = lunchbot.get_menu()
+            else:
+                menu_text = lunchbot.get_menu_by_weekday(analyzer.get_day())
             pyBot.send_message(menu_text, channel, team_id)
             pyBot.processed_message(key)
             return make_response("Posted food into channel", 200)

@@ -20,7 +20,7 @@ class WeeklyMenu:
 
     def get_daily_menu_by_weekday(self, weekday):
         for daily_menu in self.get_daily_menus():
-            if daily_menu.get_weekday() == weekday.value:
+            if daily_menu.get_weekday() == weekday:
                 return daily_menu
         return None
 
@@ -130,9 +130,37 @@ class MenuItem:
         return self.weekday + ' - ' + self.menu_text
 
 
-class Days(Enum):
-    MONDAY = 'Montag'
-    TUESDAY = 'Dienstag'
-    WEDNESDAY = 'Mittwoch'
-    THURSDAY = 'Donnerstag'
-    FRIDAY = 'Freitag'
+class KeywordAnalyzer:
+
+    FOOD = "essen"
+    NAME = "kult"
+
+    def __init__(self, message):
+        self.message = message.lower()
+        self.triggers = False
+        self.today = True
+        self.day = ''
+
+    def analyze(self):
+        self.triggers = self.trigger_word(self.FOOD) or self.trigger_word(self.NAME)
+        if self.triggers:
+            for day in WeeklyMenu.week_days:
+                if day in self.message:
+                    self.day = day
+                    self.today = False
+                    break
+        return self
+
+    def trigger_word(self, keyword):
+        return self.message.startswith(keyword) or \
+               self.message.endswith(keyword) or \
+               ' ' + keyword in self.message
+
+    def is_triggered(self):
+        return self.triggers
+
+    def is_today(self):
+        return self.today
+
+    def get_day(self):
+        return self.day
