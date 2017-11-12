@@ -9,7 +9,7 @@ def connect():
 
 def store(team_id, token):
     with connect() as connection:
-        insert_statement = "INSERT OR IGNORE INTO token (team_id, token) VALUES ('{}', '{}')".format(team_id, token)
+        insert_statement = "INSERT OR REPLACE INTO token (team_id, token) VALUES ('{}', '{}')".format(team_id, token)
         connection.execute(insert_statement)
         connection.commit()
 
