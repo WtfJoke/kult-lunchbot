@@ -1,4 +1,11 @@
-pip install BeautifulSoup4
-pip install slackclient
-pip install pdfminer.six
-pip install recastai
+beautifulsoup4==4.6.0
+chardet==3.0.4
+click==6.7
+itsdangerous==0.24
+Jinja2==2.10
+MarkupSafe==1.0
+pycryptodome==3.4.7
+six==1.11.0
+virtualenv==15.1.0
+websocket-client==0.44.0
+Werkzeug==0.12.2
