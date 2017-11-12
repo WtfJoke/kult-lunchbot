@@ -17,7 +17,7 @@ def store(team_id, token):
 def get(team_id):
     with connect() as connection:
         cursor = connection.cursor()
-        token = cursor.execute("SELECT token FROM token WHERE team_id=" + team_id).fetchone()
+        token = cursor.execute("SELECT token FROM token WHERE team_id='" + team_id + "'").fetchone()
     if token:
         return token[0]
     else:
