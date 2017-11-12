@@ -145,7 +145,7 @@ class KeywordAnalyzer:
         self.triggers = self.trigger_word(self.FOOD) or self.trigger_word(self.NAME)
         if self.triggers:
             for day in WeeklyMenu.week_days:
-                if day in self.message:
+                if day.lower() in self.message:
                     self.day = day
                     self.today = False
                     break
