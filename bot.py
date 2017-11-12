@@ -29,13 +29,6 @@ import collections
 
 from slackclient import SlackClient
 
-# To remember which teams have authorized your app and what tokens are
-# associated with each team, we can store this information in memory on
-# as a global object. When your bot is out of development, it's best to
-# save this in a more persistant memory store.
-authed_teams = {}
-
-
 class Bot(object):
     def __init__(self):
         super(Bot, self).__init__()
@@ -55,17 +48,14 @@ class Bot(object):
         # by passing an empty string as a token and then reinstantiating the
         # client with a valid OAuth token once we have one.
         self.client = SlackClient("")
-        # We'll use this dictionary to store the state of each message object.
-        # In a production environment you'll likely want to store this more
-        # persistent in a database.
+
+        # last 10 messages - for duplicate checks
         self.messages = collections.deque(maxlen=10)
         self.is_logged_in = False
 
     def auth(self, code):
         """
         Authenticate with OAuth and assign correct scopes.
-        Save a dictionary of authed team information in memory on the bot
-        object.
 
         Parameters
         ----------
@@ -84,12 +74,10 @@ class Bot(object):
                                 code=code
                                 )
         # To keep track of authorized teams and their associated OAuth tokens,
-        # we will save the team ID and bot tokens to the global
-        # authed_teams object
+        # we will save the team ID and bot tokens to our local database
         team_id = auth_response["team_id"]
         bot_token = auth_response["bot"]["bot_access_token"]
         auth_token.store(team_id, bot_token)
-        authed_teams[team_id] = {"bot_token": bot_token}
         # Then we'll reconnect to the Slack Client with the correct team's
         # bot token
         self.client = SlackClient(bot_token)
@@ -97,9 +85,8 @@ class Bot(object):
 
     def send_message(self, message, channel, team_id):
         post_message = self.get_client(team_id).api_call("chat.postMessage",
-                                                        channel=channel,
-                                                        text=message)
-
+                                                         channel=channel,
+                                                         text=message)
         timestamp = post_message["ts"]
 
     def get_messages(self):
