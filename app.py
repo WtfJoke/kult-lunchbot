@@ -58,14 +58,20 @@ def _event_handler(event_type, slack_event):
     if event_type == "message":
         event = slack_event["event"]
         subtype = event.get("subtype")
+        timestamp = event.get("ts")
         message = event.get("text")
         channel = event.get("channel")
         is_not_bot_user = subtype is None or subtype != 'bot_message'  # dont track bot messages
-        # TODO improve detecting of keywords
+        key = team_id + '_' + message + '_' + timestamp
 
+        duplicate_message = key in list(pyBot.get_messages())
+        if duplicate_message:
+            return make_response("Already answered", 200)
         if is_not_bot_user and (message.startswith("essen") or message.endswith("essen") or " essen" in message):
+            # TODO improve detecting of keywords
             menu_text = lunchbot.get_menu()
             pyBot.send_message(menu_text, channel, team_id)
+            pyBot.processed_message(key)
             return make_response("Posted food into channel", 200)
 
     # ============= Event Type Not Found! ============= #
