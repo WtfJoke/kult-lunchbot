@@ -63,15 +63,16 @@ def _event_handler(event_type, slack_event):
         timestamp = event.get("ts")
         message = event.get("text")
         channel = event.get("channel")
-        is_not_bot_user = subtype is None or subtype != 'bot_message'  # dont track bot messages
+        is_my_bot = subtype == 'bot_message' and event.get("username") == pyBot.get_name()
+
         key = team_id + '_' + message + '_' + timestamp
 
         duplicate_message = key in list(pyBot.get_messages())
-        if duplicate_message:
+        if duplicate_message or is_my_bot:
             return make_response("Already answered", 200)
         analyzer = KeywordAnalyzer(message).analyze()
         pyBot.append_message(key)
-        if is_not_bot_user and analyzer.is_triggered():
+        if analyzer.is_triggered():
             if analyzer.is_today():
                 menu_text = lunchbot.get_menu()
             else:

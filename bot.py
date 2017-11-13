@@ -99,3 +99,6 @@ class Bot(object):
         token = auth_token.get(team_id)
         self.client = SlackClient(token)
         return self.client
+
+    def get_name(self):
+        return self.name
