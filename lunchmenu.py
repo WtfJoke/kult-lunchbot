@@ -4,10 +4,11 @@ from enum import Enum
 class WeeklyMenu:
     week_days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
 
-    def __init__(self):
+    def __init__(self, filename):
         self.items = []
         self.daily_menus = []
         self.title = ''
+        self.filename = filename
 
     def add_menu_item(self, item):
         self.items.append(item)
@@ -38,6 +39,13 @@ class WeeklyMenu:
 
     def set_title(self, title):
         self.title = title
+
+    def get_filename(self):
+        return self.filename
+
+    def is_current(self, last_monday_date):
+        filename = "menu_" + last_monday_date + ".pdf"
+        return filename == self.get_filename()
 
     def __str__(self):
         menu_string = self.title + '\n'

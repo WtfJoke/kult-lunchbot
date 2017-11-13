@@ -32,6 +32,7 @@ from flask import Flask, request, make_response, render_template
 
 pyBot = bot.Bot()
 slack = pyBot.client
+lunchbot.create_menu()
 
 app = Flask(__name__)
 

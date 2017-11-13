@@ -28,14 +28,24 @@ def extract_menu_card_link():
 
 
 def download_pdf(link_to_pdf):
-    last_monday = get_monday_date()
-    filename = 'menu_' + last_monday + '.pdf'
-    file = os.path.join('menu', filename)
+    filename = get_menu_file_name()
+    file = get_menu_file()
     if not os.path.exists(file):
         print('Downloading pdf from ' + link_to_pdf)
         result = urlretrieve(link_to_pdf, file)
         # TODO: Better exception handling
     return filename
+
+
+def get_menu_file_name():
+    last_monday = get_monday_date()
+    filename = 'menu_' + last_monday + '.pdf'
+    return filename
+
+
+def get_menu_file():
+    file = os.path.join('menu', get_menu_file_name())
+    return file
 
 
 def get_monday_date():

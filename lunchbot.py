@@ -3,20 +3,34 @@ import pdf_textractor
 import datetime
 import slack_sender
 
+current_menu = None
 
-# TODO - performance improve - extract text on each call - save extracted text
-def get_menu(date=datetime.date.today().strftime('%d_%m')):
-    pdf = scraper.get_pdf()
-    menu = pdf_textractor.get_menu(pdf)
+
+def get_menu(date=datetime.date.today().strftime('%d.%m.%Y')):
+    menu = get_current_menu()
     daily_menu = menu.get_daily_menu_by_date(date)
     return get_menu_text(daily_menu, menu, date)
 
 
 def get_menu_by_weekday(weekday):
-    pdf = scraper.get_pdf()
-    menu = pdf_textractor.get_menu(pdf)
+    menu = get_current_menu()
     daily_menu = menu.get_daily_menu_by_weekday(weekday)
     return get_menu_text(daily_menu, menu, weekday)
+
+
+def get_current_menu():
+    global current_menu
+    if not current_menu:  # create menu if out of date or None
+        create_menu()
+    if not current_menu.is_current(scraper.get_monday_date()):
+        create_menu()
+    return current_menu
+
+
+def create_menu():
+    pdf = scraper.get_pdf()
+    global current_menu
+    current_menu = pdf_textractor.get_menu(pdf)
 
 
 def get_menu_text(daily_menu, menu, date):
@@ -38,7 +52,7 @@ if __name__ == "__main__":
     m = pdf_textractor.get_menu(scraper.get_pdf())
     today = datetime.date.today().strftime('%d_%m')
     d_menu = m.get_daily_menu_by_date(today)
-    slack_sender.send_message(get_menu())
+    slack_sender.send_message(get_current_menu())
 
 
 
