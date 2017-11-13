@@ -35,15 +35,15 @@ def get_menu_text(menu_filename):
 
 def get_menu(menu_filename):
     pdf = os.path.join('menu', menu_filename)
-    menu = analyze_menu_text(convert_pdf_to_txt(pdf))
+    menu = analyze_menu_text(convert_pdf_to_txt(pdf), menu_filename)
     return menu
 
 
-def analyze_menu_text(text):
+def analyze_menu_text(text, menu_filename):
     text_lines = text.split('\n')
     text_lines = list(filter(None, text_lines)) # filter empty values
 
-    menu = WeeklyMenu()
+    menu = WeeklyMenu(menu_filename)
     weekday = ''
     menu_number = 0
     menu_text = ''
