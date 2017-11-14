@@ -143,5 +143,9 @@ def hears():
                          you're looking for.", 404, {"X-Slack-No-Retry": 1})
 
 
+@app.route('/hello')
+def hello_world():
+    return "hello"
+
 if __name__ == '__main__':
     app.run(debug=True)
