@@ -1,4 +1,4 @@
-from urllib.request import urlopen, urlretrieve
+from urllib.request import urlopen, urlretrieve, Request
 from bs4 import BeautifulSoup, SoupStrainer
 import datetime
 import os
@@ -11,8 +11,8 @@ def get_pdf():
 
 
 def extract_menu_card_link():
-    page = urlopen(URL)
-
+    r = Request(URL, headers={'User-Agent': "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"})
+    page = urlopen(r)
     if page.status != 200:
         print('something wrong with url ' + URL)
 
