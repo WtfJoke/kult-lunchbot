@@ -94,3 +94,6 @@ ENV/
 
 # menues
 menu/*.pdf
+
+# db
+resources/tokens.db
