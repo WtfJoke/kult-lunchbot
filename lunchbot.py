@@ -40,7 +40,7 @@ def get_menu_text(daily_menu, menu, date):
         last_menu = menu.get_daily_menus()[len(menu.get_daily_menus()) - 1]
         if last_menu:
             menu_text = 'Sorry ich kann die Menüs von {} nicht finden'.format(str(date)) + '\n'
-            menu_text += "Hier ist das stattdessen das letzte Menü: \n"
+            menu_text += "Hier ist stattdessen das letzte Menü: \n"
             menu_text += str(last_menu)
         else:
             menu_text = "Fehler: Keine Menüs vorhanden"
