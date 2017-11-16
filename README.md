@@ -18,6 +18,8 @@ To install requirements execute:
 
 `pip install -r requirements.txt`
 
+You also need to set environment variables "SLACK_VERIFICATION_TOKEN", "SLACK_CLIENT_SECRET" to make it work.
+
 
 
 ## Add to your slack channel
