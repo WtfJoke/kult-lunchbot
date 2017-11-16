@@ -19,7 +19,6 @@ def get_menu_by_weekday(weekday):
 
 
 def get_current_menu():
-    global current_menu
     if not current_menu:  # create menu if out of date or None
         create_menu()
     if not current_menu.is_current(scraper.get_monday_date()):
