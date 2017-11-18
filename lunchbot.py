@@ -1,7 +1,6 @@
 import scraper
 import pdf_textractor
 import datetime
-import slack_sender
 
 current_menu = None
 
@@ -52,7 +51,6 @@ if __name__ == "__main__":
     today = datetime.date.today().strftime('%d_%m')
     d_menu = m.get_daily_menu_by_date(today)
     print(get_menu())
-    # slack_sender.send_message(get_menu())
 
 
 
