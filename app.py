@@ -29,6 +29,7 @@ import bot
 import lunchbot
 from lunchmenu import KeywordAnalyzer
 from flask import Flask, request, make_response, render_template
+import logging
 
 pyBot = bot.Bot()
 slack = pyBot.client
@@ -69,20 +70,25 @@ def _event_handler(event_type, slack_event):
 
         duplicate_message = key in list(pyBot.get_messages())
         if duplicate_message or is_my_bot:
+            logging.debug("Already answered message: " + message)
             return make_response("Already answered", 200)
         analyzer = KeywordAnalyzer(message).analyze()
         pyBot.append_message(key)
         if analyzer.is_triggered():
+            logging.info("Triggered bot")
             if analyzer.is_today():
                 menu_text = lunchbot.get_menu()
             else:
                 menu_text = lunchbot.get_menu_by_weekday(analyzer.get_day())
+
+            logging.info("Send menu: " + menu_text)
             pyBot.send_message(menu_text, channel, team_id)
             return make_response("Posted food into channel", 200)
 
     # ============= Event Type Not Found! ============= #
     # If the event_type does not have a handler
     message = "You have not added an event handler for the %s" % event_type
+    logging.warning(message)
     # Return a helpful error message
     return make_response(message, 501, {"X-Slack-No-Retry": 1})
 
@@ -103,12 +109,13 @@ def thanks():
     return render_template("thanks.html")
 
 
-@app.route("/", methods=["GET", "POST"])
-def hears():
+@app.route("/slack", methods=["GET", "POST"])
+def slack_listen():
     """
     This route listens for incoming events from Slack and uses the event
     handler helper function to route events to our Bot.
     """
+    logging.debug("received data: " + str(request.data) + "\n and header: " + str(request.headers))
     slack_event = json.loads(request.data)
 
     # ============= Slack URL Verification ============ #
@@ -129,6 +136,7 @@ def hears():
                    %s\n\n" % (slack_event["token"], pyBot.verification)
         # By adding "X-Slack-No-Retry" : 1 to our response headers, we turn off
         # Slack's automatic retries during development.
+        logging.error(message)
         make_response(message, 403, {"X-Slack-No-Retry": 1})
 
     # ====== Process Incoming Events from Slack ======= #
@@ -139,8 +147,10 @@ def hears():
         return _event_handler(event_type, slack_event)
     # If our bot hears things that are not events we've subscribed to,
     # send a quirky but helpful error response
-    return make_response("[NO EVENT IN SLACK REQUEST] These are not the droids\
-                         you're looking for.", 404, {"X-Slack-No-Retry": 1})
+    no_event_message = "[NO EVENT IN SLACK REQUEST] These are not the droids\
+                         you're looking for."
+    logging.warning(no_event_message)
+    return make_response(no_event_message, 404, {"X-Slack-No-Retry": 1})
 
 
 @app.route('/hello')
@@ -148,4 +158,5 @@ def hello_world():
     return "hello"
 
 if __name__ == '__main__':
+    logging.getLogger().setLevel(logging.DEBUG)
     app.run(debug=True)
