@@ -14,6 +14,13 @@ def store(team_id, token):
         connection.commit()
 
 
+def remove(team_id):
+    with connect() as connection:
+        delete_statement = "DELETE FROM token WHERE team_id='" + team_id + "'"
+        connection.execute(delete_statement)
+        connection.commit()
+
+
 def get(team_id):
     with connect() as connection:
         cursor = connection.cursor()
@@ -27,5 +34,7 @@ def get(team_id):
 
 if __name__ == "__main__":
     store('2','myTestToken')
+    print(get('2'))
+    remove('2')
     print(get('2'))
 
