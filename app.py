@@ -30,6 +30,7 @@ import lunchbot
 from lunchmenu import KeywordAnalyzer
 from flask import Flask, request, make_response, render_template
 import logging
+import auth_token
 
 pyBot = bot.Bot()
 slack = pyBot.client
@@ -84,6 +85,11 @@ def _event_handler(event_type, slack_event):
             logging.info("Send menu: " + menu_text)
             pyBot.send_message(menu_text, channel, team_id)
             return make_response("Posted food into channel", 200)
+    elif event_type == "app_uninstalled":
+        logging.info("bot was uninstalled - remove oauth token from database")
+        auth_token.remove(team_id)
+        return make_response("Removed app", 200)
+
 
     # ============= Event Type Not Found! ============= #
     # If the event_type does not have a handler
