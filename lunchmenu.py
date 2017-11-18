@@ -137,7 +137,7 @@ class MenuItem:
         return self.menu_text
 
     def get_menu(self):
-        return self.PREFIX + str(self.menu_number) + " " + self.menu_text
+        return self.PREFIX + str(self.menu_number) + " - " + self.menu_text
 
     def __str__(self):
         return self.weekday + ' - ' + self.menu_text
