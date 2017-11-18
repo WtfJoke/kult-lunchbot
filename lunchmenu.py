@@ -116,6 +116,8 @@ class DailyMenu:
 
 class MenuItem:
 
+    PREFIX = "Menü "
+
     def __init__(self, weekday, date, menu_number, menu_text):
         self.weekday = weekday.strip()
         self.date = date
@@ -131,8 +133,11 @@ class MenuItem:
     def get_menu_number(self):
         return self.menu_number
 
-    def get_menu(self):
+    def get_menu_content(self):
         return self.menu_text
+
+    def get_menu(self):
+        return self.PREFIX + str(self.menu_number) + " " + self.menu_text
 
     def __str__(self):
         return self.weekday + ' - ' + self.menu_text

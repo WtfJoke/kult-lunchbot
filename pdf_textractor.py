@@ -62,14 +62,14 @@ def analyze_menu_text(text, menu_filename):
                 daily_menu.set_date(date)
         elif 'Menü' in line:
             menu_number = extract_menu_number(line)
-            menu_text = line
 
-            # TODO: decide whether menu_text should be complete line or just the food
-            #replace_string = match_menu_line(line)
-            #if replace_string: # menu X can be replaced, replace it
-            #    menu_text = line.replace(replace_string.group(), '').strip()
-            #else: # fallback
-            #    menu_text = line
+            replace_string = match_menu_line(line)
+            if replace_string: # menu X can be replaced, replace it
+                menu_text = line.replace(replace_string.group(), '').strip()
+            else:  # fallback
+                menu_text = line
+        elif menu_number and line.strip() and not menu_text:  # menu_text could be on next line - fallback
+            menu_text = line
 
         if weekday and date and menu_number and menu_text:  # if all information present create menu item
             item = MenuItem(weekday, date, menu_number, menu_text)
