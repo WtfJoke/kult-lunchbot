@@ -1,4 +1,4 @@
-from enum import Enum
+import datetime
 
 
 class WeeklyMenu:
@@ -147,7 +147,7 @@ class KeywordAnalyzer:
 
     FOOD = "essen"
     NAME = "kult"
-    MENU = "menu"
+    MENU = "menü"
 
     RELATIVE_DAYS = ["morgen", "übermorgen", "gestern", "vorgestern"]
 
@@ -155,7 +155,9 @@ class KeywordAnalyzer:
         self.message = message.lower()
         self.triggers = False
         self.today = True
+        self.relative_day = False
         self.day = ''
+        self.date = datetime.date.today().strftime('%d.%m.%Y')
 
     def analyze(self):
         self.triggers = self.trigger_word(self.FOOD) or self.trigger_word(self.NAME) or self.trigger_word(self.MENU)
@@ -165,6 +167,13 @@ class KeywordAnalyzer:
                     self.day = day
                     self.today = False
                     break
+            for relative_day in RelativeDays.DAYS:
+                if relative_day.get_keyword() in self.message:
+                    self.today = False
+                    self.relative_day = True
+                    self.date = relative_day.get_date()
+                    break
+
         return self
 
     def trigger_word(self, keyword):
@@ -180,3 +189,28 @@ class KeywordAnalyzer:
 
     def get_day(self):
         return self.day
+
+
+class RelativeDay:
+
+    def __init__(self, keyword, days_to_add):
+        self.keyword = keyword
+        self.days_to_add = days_to_add
+
+    def get_keyword(self):
+        return self.keyword
+
+    def get_date(self):
+        today = datetime.date.today().strftime('%d.%m.%Y')
+        date = today + datetime.timedelta(days=self.days_to_add)
+        return date
+
+
+class RelativeDays:
+    TOMORROW = RelativeDay("morgen", 1)
+    DAY_AFTER_TOMORROW = RelativeDay("übermorgen", 2)
+    YESTERDAY = RelativeDay("gestern", -1)
+    DAY_BEFORE_YESTERDAY = RelativeDay("vorgestern", -2)
+
+    DAYS = [TOMORROW, DAY_AFTER_TOMORROW, YESTERDAY, DAY_BEFORE_YESTERDAY]
+
