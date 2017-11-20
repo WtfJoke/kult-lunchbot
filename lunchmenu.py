@@ -192,8 +192,14 @@ class KeywordAnalyzer:
     def is_today(self):
         return self.today
 
+    def is_relative_day(self):
+        return self.relative_day
+
     def get_day(self):
         return self.day
+
+    def get_date(self):
+        return self.date
 
 
 class RelativeDay:
@@ -206,9 +212,8 @@ class RelativeDay:
         return self.keyword
 
     def get_date(self):
-        today = datetime.date.today().strftime(DateFormats.COMMON)
-        date = today + datetime.timedelta(days=self.days_to_add)
-        return date
+        date = datetime.date.today() + datetime.timedelta(days=self.days_to_add)
+        return date.strftime(DateFormats.COMMON)
 
 
 class RelativeDays:
