@@ -10,7 +10,7 @@ Afterwards it shouts the scraped information (e.g the menu of today) to a slack 
 In development for personal usage. Currently the app its not hosted anyhwere and therefore cant be added to your slack channel.
 
 ## Requirement
-This project needs python 3.6 uses [BeautifulSoup4](https://pypi.python.org/pypi/beautifulsoup4) for scraping website, 
+This project requires python 3.6 (it wont run with 3.5 or lower) uses [BeautifulSoup4](https://pypi.python.org/pypi/beautifulsoup4) for scraping website,
 [Slack-Client](https://github.com/slackapi/python-slackclient) for communicating with slack, [pdfminer.six](https://github.com/pdfminer/pdfminer.six) for pdf text extraction
 and [Flask](http://flask.pocoo.org/) for providing the [Slack-Events REST API](https://api.slack.com/events-api) interface.
 
