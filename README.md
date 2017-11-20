@@ -20,8 +20,8 @@ To install requirements execute:
 
 You also need to set environment variables "SLACK_VERIFICATION_TOKEN", "SLACK_CLIENT_SECRET" to make it work.
 
-
-
 ## Add to your slack channel
 [![Add to Slack](https://platform.slack-edge.com/img/add_to_slack.png)](https://slack.com/oauth/authorize?scope=bot&client_id=269973088388.270476032388)
 
+## Bot in Action
+<img src="https://github.com/WtfJoke/kult-lunchbot/raw/master/resources/app_screenshot.png" width="587" height="420"> 
