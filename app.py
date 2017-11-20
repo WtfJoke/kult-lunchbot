@@ -79,6 +79,8 @@ def _event_handler(event_type, slack_event):
             logging.info("Triggered bot")
             if analyzer.is_today():
                 menu_text = lunchbot.get_menu()
+            elif analyzer.is_relative_day():
+                menu_text = lunchbot.get_menu(analyzer.get_date())
             else:
                 menu_text = lunchbot.get_menu_by_weekday(analyzer.get_day())
 
