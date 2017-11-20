@@ -1,6 +1,11 @@
 import datetime
 
 
+class DateFormats:
+    COMMON = "%d.%m.%Y"
+    FILE_FORMAT = "%d_%m"
+
+
 class WeeklyMenu:
     week_days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
 
@@ -25,7 +30,7 @@ class WeeklyMenu:
                 return daily_menu
         return None
 
-    def get_daily_menu_by_date(self, date):
+    def get_daily_menu_by_date(self, date=datetime.date.today().strftime(DateFormats.FILE_FORMAT)):
         for daily_menu in self.get_daily_menus():
             if daily_menu.get_date() == date:
                 return daily_menu
@@ -157,7 +162,7 @@ class KeywordAnalyzer:
         self.today = True
         self.relative_day = False
         self.day = ''
-        self.date = datetime.date.today().strftime('%d.%m.%Y')
+        self.date = datetime.date.today().strftime(DateFormats.COMMON)
 
     def analyze(self):
         self.triggers = self.trigger_word(self.FOOD) or self.trigger_word(self.NAME) or self.trigger_word(self.MENU)
@@ -201,7 +206,7 @@ class RelativeDay:
         return self.keyword
 
     def get_date(self):
-        today = datetime.date.today().strftime('%d.%m.%Y')
+        today = datetime.date.today().strftime(DateFormats.COMMON)
         date = today + datetime.timedelta(days=self.days_to_add)
         return date
 
@@ -213,4 +218,3 @@ class RelativeDays:
     DAY_BEFORE_YESTERDAY = RelativeDay("vorgestern", -2)
 
     DAYS = [TOMORROW, DAY_AFTER_TOMORROW, YESTERDAY, DAY_BEFORE_YESTERDAY]
-
