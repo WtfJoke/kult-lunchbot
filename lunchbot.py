@@ -1,11 +1,12 @@
 import scraper
 import pdf_textractor
 import datetime
+from lunchmenu import DateFormats
 
 current_menu = None
 
 
-def get_menu(date=datetime.date.today().strftime('%d.%m.%Y')):
+def get_menu(date=datetime.date.today().strftime(DateFormats.COMMON)):
     menu = get_current_menu()
     daily_menu = menu.get_daily_menu_by_date(date)
     return get_menu_text(daily_menu, menu, date)
@@ -48,7 +49,7 @@ def get_menu_text(daily_menu, menu, date):
 # starter method
 if __name__ == "__main__":
     m = pdf_textractor.get_menu(scraper.get_pdf())
-    today = datetime.date.today().strftime('%d_%m')
+    today = datetime.date.today().strftime(DateFormats.FILE_FORMAT)
     d_menu = m.get_daily_menu_by_date(today)
     print(get_menu())
 

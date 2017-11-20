@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup, SoupStrainer
 import datetime
 import os
 import logging
+from lunchmenu import DateFormats
 
 URL = "http://wtz-tagungszentrum.de/restaurants/"
 
@@ -57,7 +58,7 @@ def get_menu_file():
 def get_monday_date():
     today = datetime.date.today()
     last_monday = today - datetime.timedelta(days=today.weekday())
-    return last_monday.strftime('%d_%m')
+    return last_monday.strftime(DateFormats.FILE_FORMAT)
 
 # starter method
 if __name__ == "__main__":
