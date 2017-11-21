@@ -29,24 +29,21 @@ import collections
 
 from slackclient import SlackClient
 
+
 class Bot(object):
     def __init__(self):
         super(Bot, self).__init__()
         self.name = "Kult Lunchbot"
-        # When we instantiate a new bot object, we can access the app
-        # credentials we set earlier in our local development environment.
+        # When we instantiate a new bot object, we can access the app from environment variables
         self.oauth = {"client_id": "269973088388.270476032388",
                       "client_secret": os.environ.get("SLACK_CLIENT_SECRET"),
-                      # Scopes provide and limit permissions to what our app
-                      # can access. It's important to use the most restricted
-                      # scope that your app will need.
                       "scope": "bot"}
         self.verification = os.environ.get("SLACK_VERIFICATION_TOKEN")
 
         # NOTE: Python-slack requires a client connection to generate
         # an oauth token. We can connect to the client without authenticating
         # by passing an empty string as a token and then reinstantiating the
-        # client with a valid OAuth token once we have one.
+        # client with a valid OAuth token once we have one.see #auth
         self.client = SlackClient("")
 
         # last 10 messages - for duplicate checks
@@ -78,8 +75,7 @@ class Bot(object):
         team_id = auth_response["team_id"]
         bot_token = auth_response["bot"]["bot_access_token"]
         auth_token.store(team_id, bot_token)
-        # Then we'll reconnect to the Slack Client with the correct team's
-        # bot token
+        # Then we'll reconnect to the Slack Client with the correct team's bot token
         self.client = SlackClient(bot_token)
         self.is_logged_in = True
 
