@@ -96,5 +96,6 @@ def extract_menu_number(menu_text_line):
         menu_number = matcher.group(1)
     return menu_number
 
+
 if __name__ == "__main__":
     print(get_menu_text('menu_with_quotes.pdf'))
