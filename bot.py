@@ -83,6 +83,7 @@ class Bot(object):
         post_message = self.get_client(team_id).api_call("chat.postMessage",
                                                          channel=channel,
                                                          text=message)
+        # TODO add logging and add exception handling
         timestamp = post_message["ts"]
 
     def get_messages(self):
