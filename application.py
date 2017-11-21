@@ -1,28 +1,5 @@
-# -*- coding: utf-8 -*-
-# The MIT License (MIT)
-#
-# Copyright (c) 2016 Shannon Burns
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
 """
-A routing layer for the onboarding bot tutorial built using
-[Slack's Events API](https://api.slack.com/events-api) in Python
+A REST API for lunch bot in Python
 """
 import json
 import bot
@@ -36,10 +13,10 @@ pyBot = bot.Bot()
 slack = pyBot.client
 lunchbot.create_menu()
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 
-def _event_handler(event_type, slack_event):
+def slack_event_handler(event_type, slack_event):
     """
     A helper function that routes events from Slack to our Bot
     by event type and subtype.
@@ -54,7 +31,7 @@ def _event_handler(event_type, slack_event):
     Returns
     ----------
     obj
-        Response object with 200 - ok or 500 - No Event Handler error
+        Response object with 200 - ok or 501 - Not implemented
 
     """
     team_id = slack_event["team_id"]
@@ -92,16 +69,13 @@ def _event_handler(event_type, slack_event):
         auth_token.remove(team_id)
         return make_response("Removed app", 200)
 
-
-    # ============= Event Type Not Found! ============= #
-    # If the event_type does not have a handler
+    # Show not implemented if bot doesnt know how to handle this event
     message = "You have not added an event handler for the %s" % event_type
     logging.warning(message)
-    # Return a helpful error message
     return make_response(message, 501, {"X-Slack-No-Retry": 1})
 
 
-@app.route("/thanks", methods=["GET", "POST"])
+@application.route("/thanks", methods=["GET", "POST"])
 def thanks():
     """
     This route is called by Slack after the user installs our app. It will
@@ -117,54 +91,46 @@ def thanks():
     return render_template("thanks.html")
 
 
-@app.route("/slack", methods=["GET", "POST"])
+@application.route("/slack", methods=["GET", "POST"])
 def slack_listen():
     """
-    This route listens for incoming events from Slack and uses the event
+    This route listens for incoming events from Slack's Events API and uses the event
     handler helper function to route events to our Bot.
     """
     logging.debug("received data: " + str(request.data) + "\n and header: " + str(request.headers))
     slack_event = json.loads(request.data)
 
-    # ============= Slack URL Verification ============ #
-    # In order to verify the url of our endpoint, Slack will send a challenge
-    # token in a request and check for this token in the response our endpoint
-    # sends back.
-    #       For more info: https://api.slack.com/events/url_verification
+    # Send back slack url challenge - For more info: https://api.slack.com/events/url_verification
     if "challenge" in slack_event:
         return make_response(slack_event["challenge"], 200, {"content_type":
                                                              "application/json"
                                                              })
-
-    # ============ Slack Token Verification =========== #
-    # We can verify the request is coming from Slack by checking that the
-    # verification token in the request matches our app's settings
+    # Verify validation-token to prevent man in the middle
     if pyBot.verification != slack_event.get("token"):
         message = "Invalid Slack verification token: %s \npyBot has: \
                    %s\n\n" % (slack_event["token"], pyBot.verification)
-        # By adding "X-Slack-No-Retry" : 1 to our response headers, we turn off
-        # Slack's automatic retries during development.
+        # By adding "X-Slack-No-Retry" : 1 to our response headers, we turn off slack's automatic retries
         logging.error(message)
         make_response(message, 403, {"X-Slack-No-Retry": 1})
 
-    # ====== Process Incoming Events from Slack ======= #
-    # If the incoming request is an Event we've subcribed to
+    # Process subscribed slack-event
     if "event" in slack_event:
         event_type = slack_event["event"]["type"]
         # Then handle the event by event_type and have your bot respond
-        return _event_handler(event_type, slack_event)
-    # If our bot hears things that are not events we've subscribed to,
-    # send a quirky but helpful error response
+        return slack_event_handler(event_type, slack_event)
+
+    # If we get something else, send a simple helpful error response
     no_event_message = "[NO EVENT IN SLACK REQUEST] These are not the droids\
                          you're looking for."
     logging.warning(no_event_message)
     return make_response(no_event_message, 404, {"X-Slack-No-Retry": 1})
 
 
-@app.route('/hello')
+@application.route('/hello')
 def hello_world():
     return "hello"
 
+
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.DEBUG)
-    app.run(debug=True)
+    application.run(debug=True)
