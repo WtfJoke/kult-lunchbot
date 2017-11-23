@@ -8,7 +8,9 @@ from lunchmenu import KeywordAnalyzer
 from flask import Flask, request, make_response, render_template
 import logging
 import auth_token
+from configuration import Config
 
+Config.load_config()
 pyBot = bot.Bot()
 slack = pyBot.client
 lunchbot.create_menu()
