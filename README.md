@@ -18,7 +18,17 @@ To install requirements execute:
 
 `pip install -r requirements.txt`
 
-You also need to set environment variables "SLACK_VERIFICATION_TOKEN", "SLACK_CLIENT_SECRET" to make it work.
+You also need to set following environment variables to make it work:
+* SLACK_VERIFICATION_TOKEN
+* SLACK_CLIENT_SECRET
+* (Postgres-Database-Config -if not specified in config.yml, see config.yml.sample):
+    * RDS_HOSTNAME
+    * RDS_PORT
+    * RDS_DB_NAME
+    * RDS_USERNAME
+    * RDS_PASSWORD
+
+
 
 ## Bot-Commands
 Bot listens for messages which have following pattern (where date is optional): keyword + (date)

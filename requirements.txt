@@ -8,7 +8,9 @@ itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
 pdfminer.six==20170720
+psycopg2==2.7.3.2
 pycryptodome==3.4.7
+PyYAML==3.12
 requests==2.18.4
 six==1.11.0
 slackclient==1.0.9

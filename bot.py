@@ -28,6 +28,7 @@ import auth_token
 import collections
 
 from slackclient import SlackClient
+from supported_apps import Apps
 
 
 class Bot(object):
@@ -74,7 +75,7 @@ class Bot(object):
         # we will save the team ID and bot tokens to our local database
         team_id = auth_response["team_id"]
         bot_token = auth_response["bot"]["bot_access_token"]
-        auth_token.store(team_id, bot_token)
+        auth_token.store(team_id, bot_token, Apps.SLACK)
         # Then we'll reconnect to the Slack Client with the correct team's bot token
         self.client = SlackClient(bot_token)
         self.is_logged_in = True
