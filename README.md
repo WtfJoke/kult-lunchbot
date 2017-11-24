@@ -12,7 +12,7 @@ In development
 ## Requirement
 This project requires python 3.6 (it wont run with 3.5 or lower) and a postgres database
 It uses following libraries:
-* [Flask](http://flask.pocoo.org/) for providing various REST Interfaces (like [Slack-Events REST API](https://api.slack.com/events-api).
+* [Flask](http://flask.pocoo.org/) for providing various REST Interfaces (like [Slack-Events REST API](https://api.slack.com/events-api)).
 * [BeautifulSoup4](https://pypi.python.org/pypi/beautifulsoup4) for scraping website
 * [pdfminer.six](https://github.com/pdfminer/pdfminer.six) for pdf text extraction
 * [Slack-Client](https://github.com/slackapi/python-slackclient) for communicating with slack
@@ -27,7 +27,7 @@ To install requirements execute:
 You also need to set following environment variables to make it work:
 * SLACK_VERIFICATION_TOKEN
 * SLACK_CLIENT_SECRET
-* (Postgres-Database-Config -if not specified in config.yml, see config.yml.sample):
+* (optional) if not provided in config.yml - Postgres Database-Config:
     * RDS_HOSTNAME
     * RDS_PORT
     * RDS_DB_NAME
