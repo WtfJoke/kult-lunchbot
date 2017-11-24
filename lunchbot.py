@@ -6,7 +6,7 @@ from lunchmenu import DateFormats
 current_menu = None
 
 
-def get_menu(date=datetime.date.today().strftime(DateFormats.COMMON)):
+def get_menu(date):
     menu = get_current_menu()
     daily_menu = menu.get_daily_menu_by_date(date)
     return get_menu_text(daily_menu, menu, date)
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     m = pdf_textractor.get_menu(scraper.get_pdf())
     today = datetime.date.today().strftime(DateFormats.FILE_FORMAT)
     d_menu = m.get_daily_menu_by_date(today)
-    print(get_menu())
+    print(get_menu(datetime.date.today().strftime(DateFormats.COMMON)))
 
 
 

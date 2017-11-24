@@ -4,11 +4,13 @@ A REST API for lunch bot in Python
 import json
 import bot
 import lunchbot
-from lunchmenu import KeywordAnalyzer
-from flask import Flask, request, make_response, render_template
+from lunchmenu import KeywordAnalyzer, DateFormats
+from flask import Flask, request, make_response, render_template, jsonify
 import logging
 import auth_token
+import datetime
 from models import DBHelper
+import scraper
 
 pyBot = bot.Bot()
 slack = pyBot.client
@@ -56,7 +58,7 @@ def slack_event_handler(event_type, slack_event):
         if analyzer.is_triggered():
             logging.info("Triggered bot")
             if analyzer.is_today():
-                menu_text = lunchbot.get_menu()
+                menu_text = lunchbot.get_menu(datetime.date.today().strftime(DateFormats.COMMON))
             elif analyzer.is_relative_day():
                 menu_text = lunchbot.get_menu(analyzer.get_date())
             else:
@@ -130,6 +132,34 @@ def slack_listen():
 @application.route('/hello')
 def hello_world():
     return "hello"
+
+
+@application.route('/dialog', methods=["GET", "POST"])
+def dialog():
+    fulfillment = json.loads(request.data)
+    ai_result = fulfillment['result']
+    intent_name = ai_result['metadata']['intentName']
+    parameters = ai_result['parameters']
+    query = ai_result['resolvedQuery']
+
+    if 'Lunchbot' in intent_name:
+        # do something
+        name = parameters['restaurant-name']
+        date = parameters['date']
+        is_kult = name and 'kult' in name.lower()
+        if is_kult:
+            menu_text = lunchbot.get_menu(datetime.date.today().strftime(DateFormats.COMMON))
+            response = jsonify(speech="Im Kult gibt es drei verschiedene Menüs, 1 davon vegetarisch",
+                    displaytext=menu_text,
+                    source=scraper.URL)
+            logging.info("Send menu to dialog: " + menu_text)
+            return make_response(response)
+        else:
+            response = jsonify(speech="Es gibt im Restaurant Kult Mittagstisch",
+                               displaytext="Im Restaurant Kult gibt es 3 Menüs")
+            return make_response(response)
+
+    return make_response('nothing to do here', 404)
 
 
 @application.before_request
