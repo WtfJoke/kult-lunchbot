@@ -169,16 +169,9 @@ def handle_dialog_request(intent_name, parameters):
     return make_response('nothing to do here', 404)
 
 
-@application.before_request
-def before_request():
-    DBHelper.get_db().connect()
-
-
 @application.after_request
 def after_request(response):
-    db = DBHelper.get_db()
-    if not db.is_closed():
-        db.close()
+    DBHelper.close() # close if necessary
     return response
 
 
