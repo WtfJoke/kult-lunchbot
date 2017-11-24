@@ -144,6 +144,7 @@ def menu():
 def db_test():
     try:
         DBHelper.connect()
+        DBHelper.create_db_tables()
         return str(Token.select().count())
     finally:
         DBHelper.close()
