@@ -1,6 +1,6 @@
 
 
-# kult-lunchbot <img src="https://raw.githubusercontent.com/WtfJoke/kult-lunchbot/master/resources/icons/lunchbot_icon_fullbackground.png" width="40" height="40"> 
+# kult-lunchbot [<img src="https://raw.githubusercontent.com/WtfJoke/kult-lunchbot/master/resources/icons/lunchbot_icon_fullbackground.png" width="40" height="40">](https://lunchbot-hn.slack.com/apps/A7YE00YBE-kult-lunchbot?page=1)
 
 ## Overview
 This projects aims to scrape the [WTZ-Homepage](http://wtz-tagungszentrum.de) for current lunch menu.
@@ -62,8 +62,6 @@ Currently supported date's are:
 
 ## Add to your slack channel
 [![Add to Slack](https://platform.slack-edge.com/img/add_to_slack.png)](https://slack.com/oauth/authorize?scope=bot&client_id=269973088388.270476032388)
-
-[Kult-Lunchbot @ Slack-App-Page](https://lunchbot-hn.slack.com/apps/A7YE00YBE-kult-lunchbot?page=1)
 
 ## Bot in Action
 <img src="https://github.com/WtfJoke/kult-lunchbot/raw/master/resources/app_screenshot.png" width="587" height="420"> 
