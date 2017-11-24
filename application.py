@@ -136,12 +136,15 @@ def hello_world():
 
 @application.route('/dialog', methods=["GET", "POST"])
 def dialog():
-    fulfillment = json.loads(request.data)
-    ai_result = fulfillment['result']
+    request_data = json.loads(request.data)
+    ai_result = request_data['result']
     intent_name = ai_result['metadata']['intentName']
     parameters = ai_result['parameters']
-    query = ai_result['resolvedQuery']
 
+    return handle_dialog_request(intent_name, parameters)
+
+
+def handle_dialog_request(intent_name, parameters):
     if 'Lunchbot' in intent_name:
         # do something
         name = parameters['restaurant-name']
@@ -150,15 +153,14 @@ def dialog():
         if is_kult:
             menu_text = lunchbot.get_menu(datetime.date.today().strftime(DateFormats.COMMON))
             response = jsonify(speech="Im Kult gibt es drei verschiedene Menüs, 1 davon vegetarisch",
-                    displaytext=menu_text,
-                    source=scraper.URL)
+                               displaytext=menu_text,
+                               source=scraper.URL)
             logging.info("Send menu to dialog: " + menu_text)
             return make_response(response)
-        else:
+        else:  # no restaurant named
             response = jsonify(speech="Es gibt im Restaurant Kult Mittagstisch",
                                displaytext="Im Restaurant Kult gibt es 3 Menüs")
             return make_response(response)
-
     return make_response('nothing to do here', 404)
 
 
