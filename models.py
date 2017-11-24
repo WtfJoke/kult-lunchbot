@@ -4,13 +4,32 @@ from configuration import Config
 
 class DBHelper:
 
-    db = None
+    database = None
 
     @staticmethod
-    def get_db():
-        if DBHelper.db is None:
-            db = DBHelper.create_db()
-        return db
+    def get_db(needs_one=True):
+        if DBHelper.database is None and needs_one:
+            DBHelper.database = DBHelper.create_db()
+        return DBHelper.database
+
+    @staticmethod
+    def connect():
+        db = DBHelper.get_db()
+        if db:
+            print("connecting to database")
+            db.connect()
+        else:
+            print("ERROR: no database connection")
+
+    @staticmethod
+    def close():
+        db = DBHelper.get_db(False)
+        if db and not db.is_closed():
+            print("closing database")
+            db.close()
+        else:
+            print("ignoring closing of database")
+
 
     @staticmethod
     def create_db():
