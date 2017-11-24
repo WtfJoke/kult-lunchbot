@@ -9,7 +9,7 @@ from flask import Flask, request, make_response, render_template, jsonify
 import logging
 import auth_token
 import datetime
-from models import DBHelper
+from models import DBHelper, Token
 import scraper
 
 pyBot = bot.Bot()
@@ -80,6 +80,7 @@ def slack_event_handler(event_type, slack_event):
 
 @application.route("/thanks", methods=["GET", "POST"])
 def thanks():
+    DBHelper.create_db_tables() # trying to create db tables
     """
     This route is called by Slack after the user installs our app. It will
     exchange the temporary authorization code Slack sends for an OAuth token
@@ -137,6 +138,15 @@ def hello_world():
 @application.route('/menu')
 def menu():
     return lunchbot.get_menu(datetime.date.today().strftime(DateFormats.COMMON))
+
+
+@application.route('/db_test')
+def db_test():
+    try:
+        DBHelper.connect()
+        return str(Token.select().count())
+    finally:
+        DBHelper.close()
 
 
 @application.route('/dialog', methods=["GET", "POST"])
