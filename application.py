@@ -134,6 +134,11 @@ def hello_world():
     return "hello"
 
 
+@application.route('/menu')
+def menu():
+    return lunchbot.get_menu(datetime.date.today().strftime(DateFormats.COMMON))
+
+
 @application.route('/dialog', methods=["GET", "POST"])
 def dialog():
     request_data = json.loads(request.data)
