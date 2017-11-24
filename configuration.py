@@ -4,9 +4,12 @@ import logging
 
 
 class Config:
+    is_config_initialized = False
 
     @staticmethod
     def load_config():
+        if Config.is_config_initialized:
+            return
         filename = "config.yml"
 
         if os.path.exists(filename):
@@ -35,6 +38,8 @@ class Config:
                 message = "Please set all db configs"
                 print("Error: " + message)
                 raise Exception(message)
+
+        Config.is_config_initialized = True
 
     @staticmethod
     def get_db_host_name():

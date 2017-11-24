@@ -8,9 +8,8 @@ from lunchmenu import KeywordAnalyzer
 from flask import Flask, request, make_response, render_template
 import logging
 import auth_token
-from configuration import Config
+from models import DBHelper
 
-Config.load_config()
 pyBot = bot.Bot()
 slack = pyBot.client
 lunchbot.create_menu()
@@ -133,6 +132,20 @@ def hello_world():
     return "hello"
 
 
+@application.before_request
+def before_request():
+    DBHelper.get_db().connect()
+
+
+@application.after_request
+def after_request(response):
+    db = DBHelper.get_db()
+    if not db.is_closed():
+        db.close()
+    return response
+
+
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.DEBUG)
+    DBHelper.create_db_tables()
     application.run(debug=True)
