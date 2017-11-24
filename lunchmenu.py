@@ -153,6 +153,7 @@ class KeywordAnalyzer:
     FOOD = "essen"
     NAME = "kult"
     MENU = "menü"
+    LUNCH = "mittag"
 
     RELATIVE_DAYS = ["morgen", "übermorgen", "gestern", "vorgestern"]
 
@@ -165,7 +166,8 @@ class KeywordAnalyzer:
         self.date = datetime.date.today().strftime(DateFormats.COMMON)
 
     def analyze(self):
-        self.triggers = self.trigger_word(self.FOOD) or self.trigger_word(self.NAME) or self.trigger_word(self.MENU)
+        self.triggers = self.trigger_word(self.FOOD) or self.trigger_word(self.NAME) or \
+                        self.trigger_word(self.MENU) or self.trigger_word(self.LUNCH)
         if self.triggers:
             for day in WeeklyMenu.week_days:
                 if day.lower() in self.message:
