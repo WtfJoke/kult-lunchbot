@@ -1,0 +1,6 @@
+postgres:
+    host: aa1dcru2p98o6y7.cutccupb5xua.eu-central-1.rds.amazonaws.com
+    port: 5432
+    user: shjezrefh
+    password: lHqaSo7nJM5e8l6yz0kJ
+    db_name: ebdb

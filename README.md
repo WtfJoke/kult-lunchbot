@@ -10,9 +10,15 @@ Afterwards it shouts the scraped information (e.g the menu of today) to a slack 
 In development
 
 ## Requirement
-This project requires python 3.6 (it wont run with 3.5 or lower) uses [BeautifulSoup4](https://pypi.python.org/pypi/beautifulsoup4) for scraping website,
-[Slack-Client](https://github.com/slackapi/python-slackclient) for communicating with slack, [pdfminer.six](https://github.com/pdfminer/pdfminer.six) for pdf text extraction
-and [Flask](http://flask.pocoo.org/) for providing the [Slack-Events REST API](https://api.slack.com/events-api) interface.
+This project requires python 3.6 (it wont run with 3.5 or lower) and a postgres database
+It uses following libraries:
+* [Flask](http://flask.pocoo.org/) for providing various REST Interfaces (like [Slack-Events REST API](https://api.slack.com/events-api).
+* [BeautifulSoup4](https://pypi.python.org/pypi/beautifulsoup4) for scraping website
+* [pdfminer.six](https://github.com/pdfminer/pdfminer.six) for pdf text extraction
+* [Slack-Client](https://github.com/slackapi/python-slackclient) for communicating with slack
+* [psycopg2](http://initd.org/psycopg/) for postgres db access
+* [peewee](http://docs.peewee-orm.com/en/latest/) as [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping)
+
 
 To install requirements execute:
 
@@ -39,12 +45,14 @@ Currently supported keywords are:
 * essen
 * kult
 * menü
+* mittag
 
 Currently supported date's are:
 * week days
-  *  Montag
+  * Montag
   * Dienstag
   * Mittwoch
+  * Donnerstag
   * Freitag
 * relative days
   * Morgen
