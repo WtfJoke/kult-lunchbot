@@ -1,4 +1,4 @@
-
+[![Build Status](https://travis-ci.org/WtfJoke/kult-lunchbot.svg?branch=develop)](https://travis-ci.org/WtfJoke/kult-lunchbot)
 
 # kult-lunchbot [<img src="https://raw.githubusercontent.com/WtfJoke/kult-lunchbot/master/resources/icons/lunchbot_icon_fullbackground.png" width="40" height="40">](https://lunchbot-hn.slack.com/apps/A7YE00YBE-kult-lunchbot?page=1)
 
