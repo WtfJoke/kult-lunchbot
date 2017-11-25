@@ -1,6 +1,6 @@
 
 
-# kult-lunchbot <img src="https://raw.githubusercontent.com/WtfJoke/kult-lunchbot/master/resources/icons/lunchbot_icon_fullbackground.png" width="40" height="40"> 
+# kult-lunchbot [<img src="https://raw.githubusercontent.com/WtfJoke/kult-lunchbot/master/resources/icons/lunchbot_icon_fullbackground.png" width="40" height="40">](https://lunchbot-hn.slack.com/apps/A7YE00YBE-kult-lunchbot?page=1)
 
 ## Overview
 This projects aims to scrape the [WTZ-Homepage](http://wtz-tagungszentrum.de) for current lunch menu.
@@ -12,7 +12,7 @@ In development
 ## Requirement
 This project requires python 3.6 (it wont run with 3.5 or lower) and a postgres database
 It uses following libraries:
-* [Flask](http://flask.pocoo.org/) for providing various REST Interfaces (like [Slack-Events REST API](https://api.slack.com/events-api).
+* [Flask](http://flask.pocoo.org/) for providing various REST Interfaces (like [Slack-Events REST API](https://api.slack.com/events-api)).
 * [BeautifulSoup4](https://pypi.python.org/pypi/beautifulsoup4) for scraping website
 * [pdfminer.six](https://github.com/pdfminer/pdfminer.six) for pdf text extraction
 * [Slack-Client](https://github.com/slackapi/python-slackclient) for communicating with slack
@@ -27,7 +27,7 @@ To install requirements execute:
 You also need to set following environment variables to make it work:
 * SLACK_VERIFICATION_TOKEN
 * SLACK_CLIENT_SECRET
-* (Postgres-Database-Config -if not specified in config.yml, see config.yml.sample):
+* (optional) if not provided in config.yml - Postgres Database-Config:
     * RDS_HOSTNAME
     * RDS_PORT
     * RDS_DB_NAME
@@ -63,7 +63,14 @@ Currently supported date's are:
 ## Add to your slack channel
 [![Add to Slack](https://platform.slack-edge.com/img/add_to_slack.png)](https://slack.com/oauth/authorize?scope=bot&client_id=269973088388.270476032388)
 
-[Kult-Lunchbot @ Slack-App-Page](https://lunchbot-hn.slack.com/apps/A7YE00YBE-kult-lunchbot?page=1)
-
 ## Bot in Action
 <img src="https://github.com/WtfJoke/kult-lunchbot/raw/master/resources/app_screenshot.png" width="587" height="420"> 
+
+
+## Contribute
+
+1. [Fork it](https://github.com/WtfJoke/kult-lunchbot#fork-destination-box)
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
