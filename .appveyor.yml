@@ -1,0 +1,13 @@
+environment:
+
+  matrix:
+
+    # For Python versions available on Appveyor, see
+    # http://www.appveyor.com/docs/installed-software#python
+    # The list here is complete (excluding Python 2.6, which
+    # isn't covered by this document) at the time of writing.
+    - PYTHON: "C:\\Python36"
+    - PYTHON: "C:\\Python36-x64"
+
+test_script:
+  - "build.cmd %PYTHON%\\python.exe -m unittest discover -s tests"
