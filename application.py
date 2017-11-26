@@ -45,7 +45,7 @@ def slack_event_handler(event_type, slack_event):
         timestamp = event.get("ts")
         message = event.get("text")
         channel = event.get("channel")
-        is_my_bot = subtype == 'bot_message' and event.get("username") == pyBot.get_name()
+        is_my_bot = subtype == 'bot_message' and pyBot.get_name() in event.get("username")
 
         key = team_id + '_' + message + '_' + timestamp
 
