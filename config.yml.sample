@@ -2,5 +2,5 @@ postgres:
     host: localhost
     port: 5432
     user: db_user
-    passwordd: my_secret_password
+    password: my_secret_password
     db_name: lunchbot
