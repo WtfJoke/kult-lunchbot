@@ -154,17 +154,20 @@ def db_test():
 def dialog():
     request_data = json.loads(request.data)
     ai_result = request_data['result']
+
+    return handle_dialog_request(ai_result)
+
+
+def handle_dialog_request(ai_result):
     intent_name = ai_result['metadata']['intentName']
     parameters = ai_result['parameters']
+    query = ai_result['resolvedQuery']
 
-    return handle_dialog_request(intent_name, parameters)
-
-
-def handle_dialog_request(intent_name, parameters):
     if 'Lunchbot' in intent_name:
         # do something
         name = parameters['restaurant-name']
         date = parameters['date']
+
         is_kult = name and 'kult' in name.lower()
         if is_kult:
             menu_text = lunchbot.get_menu(datetime.date.today().strftime(DateFormats.COMMON))
@@ -173,7 +176,16 @@ def handle_dialog_request(intent_name, parameters):
                                source=scraper.URL)
             logging.info("Send menu to dialog: " + menu_text)
             return make_response(response)
-        else:  # no restaurant named
+        elif "vegetarisch" in query:  # vegetarian
+            daily_menu = lunchbot.get_current_menu().get_daily_menu_by_date(datetime.date.today().strftime(DateFormats.COMMON))
+            menu_text = daily_menu.get_menu_three().get_menu_content().strip() # vegetarian
+
+
+            response = jsonify(speech=menu_text,
+                               displaytext=menu_text,
+                               source=scraper.URL)
+            return make_response(response)
+        else: # no restaurant
             response = jsonify(speech="Es gibt im Restaurant Kult Mittagstisch",
                                displaytext="Im Restaurant Kult gibt es 3 Menüs")
             return make_response(response)
