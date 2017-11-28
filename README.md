@@ -36,8 +36,6 @@ You also need to set following environment variables to make it work:
     * RDS_USERNAME
     * RDS_PASSWORD
 
-
-
 ## Bot-Commands
 Bot listens for messages which have following pattern (where date is optional): keyword + (date)
 It is sufficient that the keyword (and the optional date) is somewhere in the message.
@@ -61,6 +59,14 @@ Currently supported date's are:
   * Übermorgen
   * Gestern
   * Vorgestern
+  
+## Poor man every day scheduler
+`/remind me Was gibt es heute zu essen? at 11:00 every weekday`
+
+Or for a whole channel:
+
+`/remind #channel Was gibt es heute zu essen? at 11:00 every weekday`
+
 
 ## Add to your slack channel
 [![Add to Slack](https://platform.slack-edge.com/img/add_to_slack.png)](https://slack.com/oauth/authorize?scope=bot&client_id=269973088388.270476032388)
