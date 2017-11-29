@@ -27,6 +27,7 @@ To install requirements execute:
 `pip install -r requirements.txt`
 
 You also need to set following environment variables to make it work:
+* SLACK_CLIENT_ID
 * SLACK_VERIFICATION_TOKEN
 * SLACK_CLIENT_SECRET
 * (optional) if not provided in config.yml - Postgres Database-Config:

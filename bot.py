@@ -36,7 +36,7 @@ class Bot(object):
         super(Bot, self).__init__()
         self.name = "Kult Lunchbot"
         # When we instantiate a new bot object, we can access the app from environment variables
-        self.oauth = {"client_id": "269973088388.270476032388",
+        self.oauth = {"client_id": os.environ.get("SLACK_CLIENT_ID"),
                       "client_secret": os.environ.get("SLACK_CLIENT_SECRET"),
                       "scope": "bot"}
         self.verification = os.environ.get("SLACK_VERIFICATION_TOKEN")
