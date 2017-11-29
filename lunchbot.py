@@ -27,6 +27,7 @@ def get_current_menu():
 
 
 def create_menu():
+    print("Creating new menu object")
     pdf = scraper.get_pdf()
     global current_menu
     current_menu = pdf_textractor.get_menu(pdf)
@@ -48,9 +49,6 @@ def get_menu_text(daily_menu, menu, date):
 
 # starter method
 if __name__ == "__main__":
-    m = pdf_textractor.get_menu(scraper.get_pdf())
-    today = datetime.date.today().strftime(DateFormats.FILE_FORMAT)
-    d_menu = m.get_daily_menu_by_date(today)
     print(get_menu(datetime.date.today().strftime(DateFormats.COMMON)))
 
 
