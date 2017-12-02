@@ -35,22 +35,21 @@ def get_menu_text(menu_filename):
 
 def get_menu(menu_filename):
     pdf = os.path.join('menu', menu_filename)
-    menu = analyze_menu_text(convert_pdf_to_txt(pdf), menu_filename)
+    return get_menu_from_pdf(pdf)
+
+
+def get_menu_from_pdf(pdf):
+    menu = analyze_menu_text(convert_pdf_to_txt(pdf), os.path.basename(pdf))
     return menu
 
 
 def analyze_menu_text(text, menu_filename):
-    text_lines = text.split('\n')
-    text_lines = list(filter(None, text_lines)) # filter empty values
-
     menu = WeeklyMenu(menu_filename)
-    weekday = ''
-    menu_number = 0
-    menu_text = ''
-    date = ''
+
+    text_lines = list(filter(None, text.split('\n')))  # filter empty values
+    weekday = menu_text = date = next_weekday = next_date = ''
     daily_menu = DailyMenu()
-    next_weekday = ''
-    next_date = ''
+    menu_number = 0
 
     for line in text_lines:
         if 'KW' in line:
@@ -70,7 +69,7 @@ def analyze_menu_text(text, menu_filename):
             menu_number = extract_menu_number(line)
 
             replace_string = match_menu_line(line)
-            if replace_string: # menu X can be replaced, replace it
+            if replace_string:  # menu X can be replaced, replace it
                 menu_text = line.replace(replace_string.group(), '').strip()
             else:  # fallback
                 menu_text = line
@@ -85,6 +84,7 @@ def analyze_menu_text(text, menu_filename):
 
         if daily_menu.is_complete():
             menu.add_daily_menu(daily_menu)
+            date = ''
             daily_menu = DailyMenu()
 
             if next_weekday or next_date:
@@ -94,7 +94,6 @@ def analyze_menu_text(text, menu_filename):
                 weekday = next_weekday
                 next_weekday = ''
                 next_date = ''
-
 
     return menu
 
