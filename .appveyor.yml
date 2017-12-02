@@ -9,5 +9,8 @@ environment:
 
 build: off
 
+install:
+ - "pip install -r requirements.txt"
+
 test_script:
   - "%PYTHON%\\python.exe -m unittest discover -s tests"
