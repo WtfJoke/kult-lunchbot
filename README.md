@@ -13,7 +13,7 @@ Afterwards it shouts the scraped information (e.g the menu of today) to a slack 
 In development
 
 ## Requirement
-This project requires python 3.6 (it wont run with 3.5 or lower) and a postgres database
+This project requires python 3.6 (it wont run with 3.5 or lower) and a postgres database,
 It uses following libraries:
 * [Flask](http://flask.pocoo.org/) for providing various REST Interfaces (like [Slack-Events REST API](https://api.slack.com/events-api)).
 * [BeautifulSoup4](https://pypi.python.org/pypi/beautifulsoup4) for scraping website
