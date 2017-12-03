@@ -83,6 +83,10 @@ class DailyMenu:
         self.date = date
 
     def add_menu_item(self, menu_item):
+        self.menus.append(menu_item)
+        self.assign_to_menu_one_to_three(menu_item)
+
+    def assign_to_menu_one_to_three(self, menu_item):
         number = menu_item.get_menu_number()
         if number == 1:
             self.menu1 = menu_item
@@ -93,7 +97,6 @@ class DailyMenu:
         else:
             print('Menu unknown number' + str(menu_item))
 
-        self.menus.append(menu_item)
 
     def get_menu_items(self):
         return self.menus
