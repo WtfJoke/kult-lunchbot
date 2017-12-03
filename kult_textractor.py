@@ -2,7 +2,7 @@ import os
 import re
 
 from lunchmenu import WeeklyMenu, DailyMenu, MenuItem
-from pdf_textractor import convert_pdf_to_txt
+from pdf_textractor import convert_pdf_to_txt_lines
 
 
 class KultTexTractor:
@@ -18,14 +18,13 @@ class KultTexTractor:
 
     @staticmethod
     def get_menu_from_pdf(pdf):
-        menu = KultTexTractor.analyze_menu_text(convert_pdf_to_txt(pdf), os.path.basename(pdf))
+        menu = KultTexTractor.analyze_menu_text(convert_pdf_to_txt_lines(pdf), os.path.basename(pdf))
         return menu
 
     @staticmethod
-    def analyze_menu_text(text, menu_filename):
+    def analyze_menu_text(text_lines, menu_filename):
         menu = WeeklyMenu(menu_filename)
 
-        text_lines = list(filter(None, text.split('\n')))  # filter empty values
         weekday = menu_text = date = next_weekday = next_date = ''
         daily_menu = DailyMenu()
         menu_number = 0

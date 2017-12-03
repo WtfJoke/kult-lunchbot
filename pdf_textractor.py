@@ -22,6 +22,12 @@ def convert_pdf_to_txt(path):
     return pdf_text
 
 
+def convert_pdf_to_txt_lines(path):
+    text = convert_pdf_to_txt(path)
+    text_lines = list(filter(None, text.split('\n')))  # filter empty values
+    return text_lines
+
+
 def create_text_converter(resource_manager, string_writer):
     codec = 'utf-8'
     return TextConverter(resource_manager, string_writer, codec=codec, laparams=LAParams())
