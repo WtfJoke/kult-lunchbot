@@ -56,7 +56,7 @@ class KultTexTractor:
                 menu_text = line
 
             if weekday and date and menu_number and menu_text:  # if all information present create menu item
-                item = MenuItem(weekday, date, menu_number, menu_text)
+                item = MenuItem(daily_menu, menu_number, menu_text)
                 daily_menu.add_menu_item(item)
                 menu_number = 0
                 menu_text = ''
