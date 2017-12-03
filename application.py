@@ -164,37 +164,39 @@ def handle_dialog_request(ai_result):
     query = ai_result['resolvedQuery']
 
     if 'Lunchbot' in intent_name:
-        # do something
-        name = parameters['restaurant-name']
-        date = parameters['date']
-
-        is_kult = name and 'kult' in name.lower()
-        if is_kult:
-            menu_text = lunchbot.get_menu(datetime.date.today().strftime(DateFormats.COMMON))
-            response = jsonify(speech="Im Kult gibt es drei verschiedene Menüs, 1 davon vegetarisch",
-                               displaytext=menu_text,
-                               source=scraper.URL)
-            logging.info("Send menu to dialog: " + menu_text)
-            return make_response(response)
-        elif "vegetarisch" in query:  # vegetarian
-            daily_menu = lunchbot.get_current_menu().get_daily_menu_by_date(datetime.date.today().strftime(DateFormats.COMMON))
-            menu_text = daily_menu.get_menu_three().get_menu_content().strip() # vegetarian
-
-
-            response = jsonify(speech=menu_text,
-                               displaytext=menu_text,
-                               source=scraper.URL)
-            return make_response(response)
-        else: # no restaurant
-            response = jsonify(speech="Es gibt im Restaurant Kult Mittagstisch",
-                               displaytext="Im Restaurant Kult gibt es 3 Menüs")
-            return make_response(response)
+        return handle_lunchbot_intent(parameters, query)
     return make_response('nothing to do here', 404)
+
+
+def handle_lunchbot_intent(parameters, query):
+    # do something
+    name = parameters['restaurant-name']
+    is_kult = name and 'kult' in name.lower()
+    if is_kult:
+        menu_text = lunchbot.get_menu(datetime.date.today().strftime(DateFormats.COMMON))
+        response = jsonify(speech="Im Kult gibt es drei verschiedene Menüs, 1 davon vegetarisch",
+                           displaytext=menu_text,
+                           source=scraper.URL)
+        logging.info("Send menu to dialog: " + menu_text)
+        return make_response(response)
+    elif "vegetarisch" in query:  # vegetarian
+        daily_menu = lunchbot.get_current_menu().get_daily_menu_by_date(
+            datetime.date.today().strftime(DateFormats.COMMON))
+        menu_text = daily_menu.get_menu_three().get_menu_content().strip()  # vegetarian
+
+        response = jsonify(speech=menu_text,
+                           displaytext=menu_text,
+                           source=scraper.URL)
+        return make_response(response)
+    else:  # no restaurant
+        response = jsonify(speech="Es gibt im Restaurant Kult Mittagstisch",
+                           displaytext="Im Restaurant Kult gibt es 3 Menüs")
+        return make_response(response)
 
 
 @application.after_request
 def after_request(response):
-    DBHelper.close() # close if necessary
+    DBHelper.close()  # close if necessary
     return response
 
 
