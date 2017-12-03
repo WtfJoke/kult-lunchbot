@@ -5,7 +5,7 @@ import os
 
 class PdfTextTractorTestCase(unittest.TestCase):
 
-    example_pdf = os.path.join("files", "examples", "card.pdf")
+    example_pdf = os.path.join(os.getcwd(), "files", "examples", "card.pdf")
 
     def test_get_menu_amount_with_example(self):
         menu = pdf_textractor.get_menu_from_pdf(self.example_pdf)
