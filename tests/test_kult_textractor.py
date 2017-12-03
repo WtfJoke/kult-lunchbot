@@ -6,7 +6,10 @@ import os
 
 class KultTextTractorTestCase(unittest.TestCase):
 
-    example_pdf = os.path.join(os.path.dirname(os.path.realpath(__file__)), "files", "examples", "card.pdf")
+    test_files_root = os.path.join(os.path.dirname(os.path.realpath(__file__)), "files")
+
+    example_pdf = os.path.join(test_files_root, "examples", "card.pdf")
+    buggy_menu_pdf = os.path.join(test_files_root, "buggy", "buggy_menu_tue_before_menu3_monday.pdf")
 
     def test_get_menu_amount_with_example(self):
         menu = KultTexTractor.get_menu_from_pdf(self.example_pdf)
@@ -31,13 +34,42 @@ class KultTextTractorTestCase(unittest.TestCase):
     def test_get_menu_tuesday_content_with_example(self):
         menu = KultTexTractor.get_menu_from_pdf(self.example_pdf)
         daily_menu = menu.get_daily_menus()[1]
-        expected_monday_menu_text = "Kl. Salat | Fischfilet mit Kräuterhaube und Duftreis | Dessert"
+        expected_tuesday_menu_text = "Kl. Salat | Fischfilet mit Kräuterhaube und Duftreis | Dessert"
         self.assertEqual("Dienstag", daily_menu.get_weekday())
         self.assertEqual("07.11.2017", daily_menu.get_date())
         menus = daily_menu.get_menu_items()
-        self.assertEqual(expected_monday_menu_text, menus[0].get_menu_content())
+        self.assertEqual(expected_tuesday_menu_text, menus[0].get_menu_content())
         self.assertEqual(1, menus[0].get_menu_number())
         self.assertEqual("Kl. Salat | Currywurst mit Pommes", menus[1].get_menu_content())
         self.assertEqual(2, menus[1].get_menu_number())
         self.assertEqual("Spätzlepfanne mit Marktgemüse (vegetarisch)", menus[2].get_menu_content())
+        self.assertEqual(3, menus[2].get_menu_number())
+
+    def test_get_buggy_menu_monday_content(self):
+        menu = KultTexTractor.get_menu_from_pdf(self.buggy_menu_pdf)
+        daily_menu = menu.get_daily_menus()[0]
+        expected_monday_menu_text = "Kl. Salat | Lachs – Spinat-Türmchen an Reis und Spinat Sauce | Dessert"
+        self.assertEqual("Montag", daily_menu.get_weekday())
+        self.assertEqual("27.11.2017", daily_menu.get_date())
+        menus = daily_menu.get_menu_items()
+        self.assertEqual(expected_monday_menu_text, menus[0].get_menu_content())
+        self.assertEqual(1, menus[0].get_menu_number())
+        self.assertEqual("Kl. Salat | Pizza nach Wahl", menus[1].get_menu_content())
+        self.assertEqual(2, menus[1].get_menu_number())
+        self.assertEqual("Pasta al forno(vegetarisch)", menus[2].get_menu_content())
+        self.assertEqual(3, menus[2].get_menu_number())
+
+    def test_get_buggy_menu_tuesday_content(self):
+        menu = KultTexTractor.get_menu_from_pdf(self.buggy_menu_pdf)
+        daily_menu = menu.get_daily_menus()[1]
+        # TODO menu text with price - fix me
+        expected_tuesday_menu_text = "Kl. Salat | Schweinemedaillons mit Pilzrahmsauce mit Bandnudeln | Dessert  9,80"
+        self.assertEqual("Dienstag", daily_menu.get_weekday())
+        self.assertEqual("28.11.2017", daily_menu.get_date())
+        menus = daily_menu.get_menu_items()
+        self.assertEqual(expected_tuesday_menu_text, menus[0].get_menu_content())
+        self.assertEqual(1, menus[0].get_menu_number())
+        self.assertEqual("Kl. Salat | Fafalle an Lachsssauce", menus[1].get_menu_content())
+        self.assertEqual(2, menus[1].get_menu_number())
+        self.assertEqual("Herbstlicher Auflauf mit Kürbis (vegetarisch)", menus[2].get_menu_content())
         self.assertEqual(3, menus[2].get_menu_number())

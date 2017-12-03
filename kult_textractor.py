@@ -52,7 +52,7 @@ class KultTexTractor:
                 else:  # fallback
                     menu_text = line
             elif menu_number and line.strip() and not menu_text:  # menu_text could be on next line - fallback
-                menu_text = line
+                menu_text = line.strip()
 
             if weekday and date and menu_number and menu_text:  # if all information present create menu item
                 item = MenuItem(daily_menu, menu_number, menu_text)
