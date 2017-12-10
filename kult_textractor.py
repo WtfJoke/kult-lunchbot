@@ -7,6 +7,8 @@ from pdf_textractor import convert_pdf_to_txt_lines
 
 class KultTexTractor:
 
+    DAY_DATE_PATTERN = re.compile("(\\w+)\\s(\\d\\d\.\\d\\d\\.\\d\\d\\d\\d)")
+
     @staticmethod
     def get_menu_text(menu_filename):
         return str(KultTexTractor.get_menu(menu_filename))
@@ -33,7 +35,7 @@ class KultTexTractor:
             if 'KW' in line:
                 menu.set_title(line)
             elif any(item in line for item in WeeklyMenu.week_days):  # begins line with monday-friday
-                match_day = re.compile('(\\w+)\\s(\\d\\d\.\\d\\d\\.\\d\\d\\d\\d)').match(line)  # match 'Montag 06.11.2017'
+                match_day = KultTexTractor.DAY_DATE_PATTERN.match(line)  # match 'Montag 06.11.2017'
                 if match_day:
                     if not daily_menu.get_date():
                         weekday = match_day.group(1)
@@ -45,12 +47,7 @@ class KultTexTractor:
                         next_date = match_day.group(2)
             elif 'Menü' in line:
                 menu_number = KultTexTractor.extract_menu_number(line)
-
-                replace_string = KultTexTractor.match_menu_line(line)
-                if replace_string:  # menu X can be replaced, replace it
-                    menu_text = line.replace(replace_string.group(), '').strip()
-                else:  # fallback
-                    menu_text = line
+                menu_text = KultTexTractor.extract_menu_text(line)
             elif menu_number and line.strip() and not menu_text:  # menu_text could be on next line - fallback
                 menu_text = line.strip()
 
@@ -60,20 +57,29 @@ class KultTexTractor:
                 menu_number = 0
                 menu_text = ''
 
-            if daily_menu.is_complete():
-                menu.add_daily_menu(daily_menu)
-                date = ''
-                daily_menu = DailyMenu()
+                if daily_menu.is_complete():
+                    menu.add_daily_menu(daily_menu)
+                    date = ''
+                    daily_menu = DailyMenu()
 
-                if next_weekday or next_date:
-                    daily_menu.set_weekday(next_weekday)
-                    daily_menu.set_date(next_date)
-                    date = next_date
-                    weekday = next_weekday
-                    next_weekday = ''
-                    next_date = ''
+                    if next_weekday or next_date:
+                        daily_menu.set_weekday(next_weekday)
+                        daily_menu.set_date(next_date)
+                        date = next_date
+                        weekday = next_weekday
+                        next_weekday = ''
+                        next_date = ''
 
         return menu
+
+    @staticmethod
+    def extract_menu_text(line):
+        replace_string = KultTexTractor.match_menu_line(line)
+        if replace_string:  # menu X can be replaced, replace it
+            menu_text = line.replace(replace_string.group(), '').strip()
+        else:  # fallback
+            menu_text = line
+        return menu_text
 
     @staticmethod
     def match_menu_line(menu_text_line):
