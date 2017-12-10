@@ -97,7 +97,6 @@ class DailyMenu:
         else:
             print('Menu unknown number' + str(menu_item))
 
-
     def get_menu_items(self):
         return self.menus
 
