@@ -10,13 +10,9 @@ class WeeklyMenu:
     week_days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
 
     def __init__(self, filename):
-        self.items = []
         self.daily_menus = []
         self.title = ''
         self.filename = filename
-
-    def add_menu_item(self, item):
-        self.items.append(item)
 
     def add_daily_menu(self, daily_menu):
         self.daily_menus.append(daily_menu)
@@ -35,9 +31,6 @@ class WeeklyMenu:
             if daily_menu.get_date() == date:
                 return daily_menu
         return None
-
-    def get_items(self):
-        return self.items
 
     def get_title(self):
         return self.title
