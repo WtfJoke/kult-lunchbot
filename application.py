@@ -1,5 +1,5 @@
 """
-A REST API for lunch bot in Python
+A REST API for a lunch bot in Python
 """
 import json
 import bot
