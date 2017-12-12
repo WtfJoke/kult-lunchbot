@@ -26,15 +26,19 @@ class GoogleActionDialog:
 
     def handle_by_action(self):
         action = self.request_result['action']
+
         if action == "listMenus":
-            return self.action_list_menus()
+            response = self.action_list_menus()
         elif action == "selectedMenuNumber":
-            return self.action_selected_menu_number()
+            response = self.action_selected_menu_number()
         elif action == "startAction":
-            return self.action_start()
+            response = self.action_start()
         elif action == "whichMenu":
-            return self.action_which_menu()
-        return make_response('nothing to do here', 404)
+            response = self.action_which_menu()
+        else:
+            response = make_response('nothing to do here', 404)
+
+        return response
 
     def action_list_menus(self):
         today = datetime.date.today()
