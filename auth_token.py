@@ -15,8 +15,13 @@ def store(team_id, auth_token, app):
 def remove(team_id):
     try:
         DBHelper.connect()
-        token = Token.get(Token.issuer==team_id)
-        delete_count = token.delete_instance()
+        has_token = Token.select().where(Token.issuer == team_id).exists()
+        if has_token:
+            token = Token.get(Token.issuer == team_id)
+            delete_count = token.delete_instance()
+            print("Deleted successfully " + delete_count + " token")
+        else:
+            print("Token to remove not found - There are maybe remaining tokens")
     finally:
         DBHelper.close()
 
