@@ -10,13 +10,13 @@ import logging
 import auth_token
 import datetime
 from models import DBHelper, Token
-import scraper
-
-pyBot = bot.Bot()
-slack = pyBot.client
-lunchbot.create_menu()
+import locale
+from googleaction import GoogleActionDialog
 
 application = Flask(__name__)
+pyBot = bot.Bot()
+lunchbot.create_menu()
+locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 
 def slack_event_handler(event_type, slack_event):
@@ -152,47 +152,8 @@ def db_test():
 
 @application.route('/dialog', methods=["GET", "POST"])
 def dialog():
-    request_data = json.loads(request.data)
-    ai_result = request_data['result']
-
-    return handle_dialog_request(ai_result)
-
-
-def handle_dialog_request(ai_result):
-    intent_name = ai_result['metadata']['intentName']
-    parameters = ai_result['parameters']
-    query = ai_result['resolvedQuery']
-
-    if 'Lunchbot' in intent_name:
-        return handle_lunchbot_intent(parameters, query)
-    return make_response('nothing to do here', 404)
-
-
-def handle_lunchbot_intent(parameters, query):
-    # do something
-    name = parameters['restaurant-name']
-    is_kult = name and 'kult' in name.lower()
-    if is_kult:
-        menu_text = lunchbot.get_menu(datetime.date.today().strftime(DateFormats.COMMON))
-        response = jsonify(speech="Im Kult gibt es drei verschiedene Menüs, 1 davon vegetarisch",
-                           displaytext=menu_text,
-                           source=scraper.URL)
-        logging.info("Send menu to dialog: " + menu_text)
-        return make_response(response)
-    elif "vegetarisch" in query:  # vegetarian
-        daily_menu = lunchbot.get_current_menu().get_daily_menu_by_date(
-            datetime.date.today().strftime(DateFormats.COMMON))
-        menu_text = daily_menu.get_menu_three().get_menu_content().strip()  # vegetarian
-
-        response = jsonify(speech=menu_text,
-                           displaytext=menu_text,
-                           source=scraper.URL)
-        return make_response(response)
-    else:  # no restaurant
-        response = jsonify(speech="Es gibt im Restaurant Kult Mittagstisch",
-                           displaytext="Im Restaurant Kult gibt es 3 Menüs")
-        return make_response(response)
-
+    google_dialog = GoogleActionDialog(request, lunchbot.get_current_menu())
+    return google_dialog.handle()
 
 @application.after_request
 def after_request(response):
