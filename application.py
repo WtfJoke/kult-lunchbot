@@ -3,7 +3,7 @@ A REST API for lunch bot in Python
 """
 import json
 import bot
-import lunchbot
+import kult_menuholder
 from lunchmenu import KeywordAnalyzer, DateFormats
 from flask import Flask, request, make_response, render_template, jsonify
 import logging
@@ -15,7 +15,7 @@ from googleaction import GoogleActionDialog
 
 application = Flask(__name__)
 pyBot = bot.Bot()
-lunchbot.create_menu()
+kult_menuholder.create_menu()
 locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 
@@ -58,11 +58,11 @@ def slack_event_handler(event_type, slack_event):
         if analyzer.is_triggered():
             logging.info("Triggered bot")
             if analyzer.is_today():
-                menu_text = lunchbot.get_menu(datetime.date.today().strftime(DateFormats.COMMON))
+                menu_text = kult_menuholder.get_menu(datetime.date.today().strftime(DateFormats.COMMON))
             elif analyzer.is_relative_day():
-                menu_text = lunchbot.get_menu(analyzer.get_date())
+                menu_text = kult_menuholder.get_menu(analyzer.get_date())
             else:
-                menu_text = lunchbot.get_menu_by_weekday(analyzer.get_day())
+                menu_text = kult_menuholder.get_menu_by_weekday(analyzer.get_day())
 
             logging.info("Send menu: " + menu_text)
             pyBot.send_message(menu_text, channel, team_id)
@@ -137,7 +137,7 @@ def hello_world():
 
 @application.route('/menu')
 def menu():
-    return lunchbot.get_menu(datetime.date.today().strftime(DateFormats.COMMON))
+    return kult_menuholder.get_menu(datetime.date.today().strftime(DateFormats.COMMON))
 
 
 @application.route('/db_test')
@@ -152,7 +152,7 @@ def db_test():
 
 @application.route('/dialog', methods=["GET", "POST"])
 def dialog():
-    google_dialog = GoogleActionDialog(request, lunchbot.get_current_menu())
+    google_dialog = GoogleActionDialog(request, kult_menuholder.get_current_menu())
     return google_dialog.handle()
 
 @application.after_request
