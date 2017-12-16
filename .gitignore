@@ -93,7 +93,7 @@ ENV/
 .idea/
 
 # menues
-menu/*.pdf
+resources/menues/*.pdf
 
 # config
 config.yml

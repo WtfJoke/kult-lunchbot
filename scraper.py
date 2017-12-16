@@ -75,7 +75,7 @@ def create_menu_folder():
 
 def get_menu_folder():
     project_root = os.path.dirname(os.path.realpath(__file__))
-    return os.path.join(project_root, "menu")
+    return os.path.join(project_root, "resources", "menues")
 
 
 # starter method
