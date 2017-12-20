@@ -65,6 +65,10 @@ class GoogleActionDialog:
                 menu_texts.append(daily_menu.get_menu_two().get_menu())
             elif menu_number == 3:
                 menu_texts.append(daily_menu.get_menu_three().get_menu())
+            elif not menu_number: # empty string means all menus
+                menu_texts.append(daily_menu.get_menu_one().get_menu())
+                menu_texts.append(daily_menu.get_menu_two().get_menu())
+                menu_texts.append(daily_menu.get_menu_three().get_menu())
             else:
                 menu_texts.append("Sorry, habe kein Menü: " + str(menu_number))
 
