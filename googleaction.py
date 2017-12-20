@@ -58,16 +58,18 @@ class GoogleActionDialog:
         menu_numbers = self.request_result["parameters"]["number"]
         daily_menu = self.kult_menu.get_daily_menu_by_date(datetime.date.today().strftime(DateFormats.COMMON))
         menu_texts = []
-        for menu_number in menu_numbers:
+        if not menu_numbers: # empty string means all menus
+            menu_texts.append(daily_menu.get_menu_one().get_menu())
+            menu_texts.append(daily_menu.get_menu_two().get_menu())
+            menu_texts.append(daily_menu.get_menu_three().get_menu())
+
+        for menu_number_as_string in menu_numbers:
+            menu_number = int(menu_number_as_string)
             if menu_number == 1:
                 menu_texts.append(daily_menu.get_menu_one().get_menu())
             elif menu_number == 2:
                 menu_texts.append(daily_menu.get_menu_two().get_menu())
             elif menu_number == 3:
-                menu_texts.append(daily_menu.get_menu_three().get_menu())
-            elif not menu_number: # empty string means all menus
-                menu_texts.append(daily_menu.get_menu_one().get_menu())
-                menu_texts.append(daily_menu.get_menu_two().get_menu())
                 menu_texts.append(daily_menu.get_menu_three().get_menu())
             else:
                 menu_texts.append("Sorry, habe kein Menü: " + str(menu_number))
