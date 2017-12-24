@@ -14,11 +14,6 @@ class KultTexTractor:
         return str(KultTexTractor.get_menu(menu_filename))
 
     @staticmethod
-    def get_menu(menu_filename):
-        pdf = os.path.join('menu', menu_filename)
-        return KultTexTractor.get_menu_from_pdf(pdf)
-
-    @staticmethod
     def get_menu_from_pdf(pdf):
         menu = KultTexTractor.analyze_menu_text(convert_pdf_to_txt_lines(pdf), os.path.basename(pdf))
         return menu
