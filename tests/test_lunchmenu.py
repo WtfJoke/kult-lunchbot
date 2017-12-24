@@ -1,6 +1,8 @@
 import unittest
 from lunchmenu import KeywordAnalyzer, DateFormats, WeeklyMenu
 import datetime
+from kult_textractor import KultTexTractor
+import os
 
 
 class KeywordAnalyzerTestCase(unittest.TestCase):
@@ -41,3 +43,17 @@ class KeywordAnalyzerTestCase(unittest.TestCase):
         self.assertEqual(True, result.is_triggered())
         self.assertEqual(False, result.is_relative_day())
         self.assertEqual('Montag', result.get_day())
+
+
+class WeeklyMenuTestCase(unittest.TestCase):
+
+    def setUp(self):
+        test_root = os.path.dirname(os.path.realpath(__file__))
+        example_pdf = os.path.join(test_root, "files", "menu", "examples", "card.pdf")
+        self.sample_menu = KultTexTractor.get_menu_from_pdf(example_pdf)
+
+    def test_get_daily_menu_by_weekday_monday(self):
+        current_menu = self.sample_menu.get_daily_menu_by_weekday("Montag")
+        self.assertIsNotNone(current_menu)
+        self.assertEqual(True, current_menu.is_complete())
+
