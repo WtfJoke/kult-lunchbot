@@ -146,8 +146,6 @@ class KeywordAnalyzer:
     MENU = "menü"
     LUNCH = "mittag"
 
-    RELATIVE_DAYS = ["morgen", "übermorgen", "gestern", "vorgestern"]
-
     def __init__(self, message):
         self.message = message.lower()
         self.triggers = False
