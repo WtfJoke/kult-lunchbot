@@ -42,7 +42,8 @@ class GoogleActionDialog:
 
     def action_list_menus(self):
         today = datetime.date.today()
-        today_translated_weekday = today.strftime("%A") # TODO take date from request and change weekday to heute if weekday = heute
+        # TODO take date from request and change weekday to "Heute" if weekday == today
+        today_translated_weekday = today.strftime("%A")
         daily_menu = self.kult_menu.get_daily_menu_by_date(today.strftime(DateFormats.COMMON))
 
         menu_count = len(daily_menu.get_menu_items())
@@ -58,7 +59,7 @@ class GoogleActionDialog:
         menu_numbers = self.request_result["parameters"]["number"]
         daily_menu = self.kult_menu.get_daily_menu_by_date(datetime.date.today().strftime(DateFormats.COMMON))
         menu_texts = []
-        if not menu_numbers: # empty string means all menus
+        if not menu_numbers:  # empty string means all menus
             menu_texts.append(daily_menu.get_menu_one().get_menu())
             menu_texts.append(daily_menu.get_menu_two().get_menu())
             menu_texts.append(daily_menu.get_menu_three().get_menu())
