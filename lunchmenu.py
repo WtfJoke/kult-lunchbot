@@ -107,10 +107,7 @@ class DailyMenu:
 
     def __str__(self):
         daily_menu = self.weekday + ' - ' + self.date + '\n'
-        daily_menu += self.get_menu_one().get_menu() + '\n'
-        daily_menu += self.get_menu_two().get_menu() + '\n'
-        daily_menu += self.get_menu_three().get_menu() + '\n'
-
+        daily_menu += '\n'.join(str(item) for item in self.get_menu_items())
         return daily_menu
 
 
@@ -136,7 +133,7 @@ class MenuItem:
         return self.PREFIX + str(self.menu_number) + " - " + self.menu_text
 
     def __str__(self):
-        return self.weekday + ' - ' + self.menu_text
+        return self.get_menu()
 
 
 class KeywordAnalyzer:
