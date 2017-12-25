@@ -71,3 +71,6 @@ class WeeklyMenuTestCase(unittest.TestCase):
     def test_get_daily_menu_by_date_not_available(self):
         date = datetime.date(2017, 12, 6).strftime(DateFormats.COMMON)
         self.assertIsNone(self.sample_menu.get_daily_menu_by_date(date))
+
+    def test_get_title_sample(self):
+        self.assertEqual("KW 45 06.11. – 10.11.2017", self.sample_menu.get_title())

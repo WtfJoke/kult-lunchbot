@@ -36,7 +36,7 @@ class WeeklyMenu:
         return self.title
 
     def set_title(self, title):
-        self.title = title
+        self.title = title.strip()
 
     def get_filename(self):
         return self.filename
