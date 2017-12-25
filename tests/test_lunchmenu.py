@@ -56,4 +56,18 @@ class WeeklyMenuTestCase(unittest.TestCase):
         current_menu = self.sample_menu.get_daily_menu_by_weekday("Montag")
         self.assertIsNotNone(current_menu)
         self.assertEqual(True, current_menu.is_complete())
+        self.assertEqual(3, len(current_menu.get_menu_items()))
 
+    def test_get_daily_menu_by_weekday_sunday(self):
+        self.assertIsNone(self.sample_menu.get_daily_menu_by_weekday("Sonntag"))
+
+    def test_get_daily_menu_by_date_06_11_17(self):
+        date = datetime.date(2017, 11, 6).strftime(DateFormats.COMMON)
+        current_menu = self.sample_menu.get_daily_menu_by_date(date)
+        self.assertIsNotNone(current_menu)
+        self.assertEqual(True, current_menu.is_complete())
+        self.assertEqual(3, len(current_menu.get_menu_items()))
+
+    def test_get_daily_menu_by_date_not_available(self):
+        date = datetime.date(2017, 12, 6).strftime(DateFormats.COMMON)
+        self.assertIsNone(self.sample_menu.get_daily_menu_by_date(date))
