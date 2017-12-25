@@ -26,7 +26,7 @@ class WeeklyMenu:
                 return daily_menu
         return None
 
-    def get_daily_menu_by_date(self, date=datetime.date.today().strftime(DateFormats.FILE_FORMAT)):
+    def get_daily_menu_by_date(self, date=datetime.date.today().strftime(DateFormats.COMMON)):
         for daily_menu in self.get_daily_menus():
             if daily_menu.get_date() == date:
                 return daily_menu
