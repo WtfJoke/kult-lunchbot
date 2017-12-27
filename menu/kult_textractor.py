@@ -3,7 +3,7 @@ import re
 
 from menu.lunchmenu import WEEK_DAYS
 from menu.menuitem import MenuItem
-from menu.dailymenu import DailyMenu
+from menu.dailymenu import KultDailyMenu
 from menu.weeklymenu import KultWeeklyMenu
 from pdf_textractor import convert_pdf_to_txt_lines
 
@@ -26,7 +26,7 @@ class KultTexTractor:
         menu = KultWeeklyMenu(menu_filename)
 
         weekday = menu_text = date = next_weekday = next_date = ''
-        daily_menu = DailyMenu()
+        daily_menu = KultDailyMenu()
         menu_number = 0
 
         for line in text_lines:
@@ -58,7 +58,7 @@ class KultTexTractor:
                 if daily_menu.is_complete():
                     menu.add_daily_menu(daily_menu)
                     date = ''
-                    daily_menu = DailyMenu()
+                    daily_menu = KultDailyMenu()
 
                     if next_weekday or next_date:
                         daily_menu.set_weekday(next_weekday)
