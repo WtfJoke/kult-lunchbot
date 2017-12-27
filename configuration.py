@@ -11,9 +11,11 @@ class Config:
         if Config.is_config_initialized:
             return
         filename = "config.yml"
+        project_root = os.path.dirname(os.path.realpath(__file__))
+        config_path = os.path.join(project_root, filename)
 
-        if os.path.exists(filename):
-            Config.load_from_file(filename)
+        if os.path.exists(config_path):
+            Config.load_from_file(config_path)
         else:
             Config.load_from_environment()
 
@@ -33,6 +35,12 @@ class Config:
     def load_from_file(filename):
         with open(filename, 'r') as yml_file:
             cfg = yaml.load(yml_file)
+        Config.load_db_config(cfg)
+        Config.load_sti_api_config(cfg)
+        logging.info("Set environment-variables successfully")
+
+    @staticmethod
+    def load_db_config(cfg):
         db_config = cfg['postgres']
         host = db_config['host']
         port = str(db_config['port'])
@@ -45,7 +53,15 @@ class Config:
         os.environ['RDS_DB_NAME'] = db
         os.environ['RDS_USERNAME'] = user
         os.environ['RDS_PASSWORD'] = password
-        logging.info("Set environment-variables successfully")
+
+    @staticmethod
+    def load_sti_api_config(cfg):
+        api_config = cfg['sti-api']
+        user = api_config['user']
+        password = api_config['password']
+
+        os.environ['STI_API_USER'] = user
+        os.environ['STI_API_PASSWORD'] = password
 
     @staticmethod
     def get_db_host_name():
