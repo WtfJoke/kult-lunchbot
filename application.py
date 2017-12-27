@@ -3,7 +3,7 @@ A REST API for lunch bot in Python
 """
 import json
 import bot
-import kult_menuholder
+from menu import kult_menuholder
 from menu.lunchmenu import KeywordAnalyzer, DateFormats
 from flask import Flask, request, make_response, render_template
 import logging
