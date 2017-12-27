@@ -1,7 +1,10 @@
 import os
 import re
 
-from menu.lunchmenu import WeeklyMenu, DailyMenu, MenuItem
+from menu.lunchmenu import WEEK_DAYS
+from menu.menuitem import MenuItem
+from menu.dailymenu import DailyMenu
+from menu.weeklymenu import KultWeeklyMenu
 from pdf_textractor import convert_pdf_to_txt_lines
 
 
@@ -20,7 +23,7 @@ class KultTexTractor:
 
     @staticmethod
     def analyze_menu_text(text_lines, menu_filename):
-        menu = WeeklyMenu(menu_filename)
+        menu = KultWeeklyMenu(menu_filename)
 
         weekday = menu_text = date = next_weekday = next_date = ''
         daily_menu = DailyMenu()
@@ -29,7 +32,7 @@ class KultTexTractor:
         for line in text_lines:
             if 'KW' in line:
                 menu.set_title(line)
-            elif any(item in line for item in WeeklyMenu.week_days):  # begins line with monday-friday
+            elif any(item in line for item in WEEK_DAYS):  # begins line with monday-friday
                 match_day = KultTexTractor.DAY_DATE_PATTERN.match(line)  # match 'Montag 06.11.2017'
                 if match_day:
                     if not daily_menu.get_date():
