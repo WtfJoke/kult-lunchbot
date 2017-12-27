@@ -1,7 +1,7 @@
 import unittest
 from menu.lunchmenu import KeywordAnalyzer, DateFormats
 import datetime
-from kult_textractor import KultTexTractor
+from menu.kult_textractor import KultTexTractor
 import os
 
 

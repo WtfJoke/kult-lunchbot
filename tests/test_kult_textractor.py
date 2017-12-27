@@ -1,6 +1,6 @@
 import unittest
 
-from kult_textractor import KultTexTractor
+from menu.kult_textractor import KultTexTractor
 import os
 
 

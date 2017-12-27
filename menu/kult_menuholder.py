@@ -1,4 +1,4 @@
-from kult_textractor import KultTexTractor
+from menu.kult_textractor import KultTexTractor
 import scraper
 import datetime
 from menu.lunchmenu import DateFormats
