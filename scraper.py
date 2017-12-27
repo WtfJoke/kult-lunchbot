@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup, SoupStrainer
 import datetime
 import os
 import logging
-from lunchmenu import DateFormats
+from menu.lunchmenu import DateFormats
 
 URL = "http://wtz-tagungszentrum.de/restaurants/"
 

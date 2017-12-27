@@ -7,7 +7,7 @@ https://dialogflow.com/docs/fulfillment#response
 import json
 from flask import make_response, jsonify
 import datetime
-from lunchmenu import DateFormats
+from menu.lunchmenu import DateFormats
 import scraper
 
 

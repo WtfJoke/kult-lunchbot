@@ -1,7 +1,7 @@
 import os
 import re
 
-from lunchmenu import WeeklyMenu, DailyMenu, MenuItem
+from menu.lunchmenu import WeeklyMenu, DailyMenu, MenuItem
 from pdf_textractor import convert_pdf_to_txt_lines
 
 

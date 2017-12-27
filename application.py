@@ -4,8 +4,8 @@ A REST API for lunch bot in Python
 import json
 import bot
 import kult_menuholder
-from lunchmenu import KeywordAnalyzer, DateFormats
-from flask import Flask, request, make_response, render_template, jsonify
+from menu.lunchmenu import KeywordAnalyzer, DateFormats
+from flask import Flask, request, make_response, render_template
 import logging
 import auth_token
 import datetime

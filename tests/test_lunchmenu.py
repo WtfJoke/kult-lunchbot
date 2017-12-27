@@ -1,5 +1,5 @@
 import unittest
-from lunchmenu import KeywordAnalyzer, DateFormats, WeeklyMenu
+from menu.lunchmenu import KeywordAnalyzer, DateFormats
 import datetime
 from kult_textractor import KultTexTractor
 import os

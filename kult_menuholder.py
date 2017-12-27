@@ -1,7 +1,7 @@
 from kult_textractor import KultTexTractor
 import scraper
 import datetime
-from lunchmenu import DateFormats
+from menu.lunchmenu import DateFormats
 
 current_menu = None
 
