@@ -16,6 +16,7 @@ from googleaction import GoogleActionDialog
 application = Flask(__name__)
 pyBot = bot.Bot()
 kult_menuholder.create_menu()
+# set DE in LANG environment variable on server see https://docs.python.org/3.6/library/locale.html
 locale.setlocale(locale.LC_ALL, '')
 
 
