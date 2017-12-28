@@ -56,6 +56,10 @@ class Config:
 
     @staticmethod
     def load_sti_api_config(cfg):
+        if 'sti-api' not in cfg:
+            logging.warning("No STI-API credentials - Menu of Restaurant Stiftsberg cant be fetched")
+            # TODO use disable flag in STI-* classes
+            return
         api_config = cfg['sti-api']
         user = api_config['user']
         password = api_config['password']
