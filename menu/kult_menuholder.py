@@ -1,7 +1,7 @@
-from kult_textractor import KultTexTractor
+from menu.kult_textractor import KultTexTractor
 import scraper
 import datetime
-from lunchmenu import DateFormats
+from menu.lunchmenu import DateFormats
 
 current_menu = None
 
@@ -30,7 +30,7 @@ def create_menu():
     print("Creating new menu object")
     pdf = scraper.get_pdf()
     global current_menu
-    current_menu = KultTexTractor.get_menu(pdf)
+    current_menu = KultTexTractor.get_menu_from_pdf(pdf)
 
 
 def get_menu_text(daily_menu, menu, date):

@@ -4,3 +4,8 @@ postgres:
     user: db_user
     password: my_secret_password
     db_name: lunchbot
+
+# API-Login for https://canteen.13.94.125.68.xip.io/api
+sti-api:
+    user: api_user
+    password: api_password

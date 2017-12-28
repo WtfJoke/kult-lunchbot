@@ -1,6 +1,6 @@
 import unittest
 
-from kult_textractor import KultTexTractor
+from menu.kult_textractor import KultTexTractor
 import os
 
 
@@ -8,8 +8,8 @@ class KultTextTractorTestCase(unittest.TestCase):
 
     test_files_root = os.path.join(os.path.dirname(os.path.realpath(__file__)), "files")
 
-    example_pdf = os.path.join(test_files_root, "examples", "card.pdf")
-    buggy_menu_pdf = os.path.join(test_files_root, "buggy", "buggy_menu_tue_before_menu3_monday.pdf")
+    example_pdf = os.path.join(test_files_root, "menu", "examples", "card.pdf")
+    buggy_menu_pdf = os.path.join(test_files_root, "menu", "buggy", "buggy_menu_tue_before_menu3_monday.pdf")
 
     def test_get_menu_amount_with_example(self):
         menu = KultTexTractor.get_menu_from_pdf(self.example_pdf)
