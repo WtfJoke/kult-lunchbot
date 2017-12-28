@@ -16,7 +16,7 @@ from googleaction import GoogleActionDialog
 application = Flask(__name__)
 pyBot = bot.Bot()
 kult_menuholder.create_menu()
-locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
+locale.setlocale(locale.LC_ALL, '')
 
 
 def slack_event_handler(event_type, slack_event):
