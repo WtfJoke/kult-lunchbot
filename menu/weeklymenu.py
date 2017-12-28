@@ -57,13 +57,5 @@ class KultWeeklyMenu(WeeklyMenu):
         filename = "menu_" + last_monday_date + ".pdf"
         return filename == self.get_filename()
 
-    def __str__(self):
-        menu_string = self.title + '\n'
-
-        for daily_menu in self.get_daily_menus():
-            menu_string += str(daily_menu) + '\n'
-
-        return menu_string
-
 
 
