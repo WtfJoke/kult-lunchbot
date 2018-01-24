@@ -5,6 +5,9 @@ import requests
 import os
 from configuration import Config
 from datetime import datetime
+from menu.weeklymenu import WeeklyMenu
+from menu.dailymenu import DailyMenu
+from menu.menuitem import MenuItem
 
 
 class STIMenuFetcher:
@@ -36,6 +39,13 @@ class STIMenuFetcher:
         response = r.json()
         return response
 
+    def get_menu_from_entries(self):
+        response = self.get_menu_entries()
+        weeklymenu = WeeklyMenu()
+        dailymenu = DailyMenu()
+        menuitem = MenuItem()
+        dailymenu.set_date(None)
+
     @staticmethod
     def measure_api_call(method_name, start_time):
         time_elapsed = datetime.now() - start_time
@@ -44,4 +54,4 @@ class STIMenuFetcher:
 
 if __name__ == '__main__':
     Config.load_config()
-    print(STIMenuFetcher().get_menu_entries())
+    print(STIMenuFetcher().get_menu_from_entries())
