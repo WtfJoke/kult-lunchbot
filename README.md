@@ -29,8 +29,8 @@ To install requirements execute:
 
 You also need to set following environment variables to make it work:
 * SLACK_CLIENT_ID
-* SLACK_VERIFICATION_TOKEN
 * SLACK_CLIENT_SECRET
+* SLACK_VERIFICATION_TOKEN
 * (optional) if not provided in config.yml - Postgres Database-Config:
     * RDS_HOSTNAME
     * RDS_PORT
