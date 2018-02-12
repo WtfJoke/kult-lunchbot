@@ -27,7 +27,6 @@ def extract_menu_card_link():
             if target.endswith('.pdf'):
                 menu_card_link = target
                 logging.info("Found pdf link: " + menu_card_link)
-                break
 
     return menu_card_link
 
