@@ -4,6 +4,7 @@ import datetime
 import os
 import logging
 from menu.lunchmenu import DateFormats
+import pdf_textractor
 
 URL = "http://wtz-tagungszentrum.de/restaurants/"
 
@@ -27,6 +28,7 @@ def extract_menu_card_link():
             if target.endswith('.pdf'):
                 menu_card_link = target
                 logging.info("Found pdf link: " + menu_card_link)
+                break
 
     return menu_card_link
 
@@ -80,4 +82,4 @@ def get_menu_folder():
 # starter method
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.DEBUG)
-    get_pdf()
+    print(pdf_textractor.convert_pdf_to_txt(get_pdf()))
