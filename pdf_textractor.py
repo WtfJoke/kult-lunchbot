@@ -8,6 +8,7 @@ from io import StringIO
 
 def convert_pdf_to_txt(path):
     resource_manager = PDFResourceManager()
+    device = None
     try:
         with StringIO() as string_writer, open(path, 'rb') as pdf_file:
             device = create_text_converter(resource_manager, string_writer)
@@ -18,7 +19,8 @@ def convert_pdf_to_txt(path):
 
             pdf_text = string_writer.getvalue()
     finally:
-        device.close()
+        if device:
+            device.close()
     return pdf_text
 
 
@@ -34,4 +36,4 @@ def create_text_converter(resource_manager, string_writer):
 
 
 if __name__ == "__main__":
-    print(convert_pdf_to_txt(os.path.join('menu', 'tests', 'files', 'buggy', 'menu_with_quotes.pdf')))
+    print(convert_pdf_to_txt(os.path.join('tests', 'files', 'menu', 'buggy', 'friday_no_text_Wochenkarte-KW-6-2018-2.pdf')))
