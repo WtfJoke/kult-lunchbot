@@ -47,7 +47,13 @@ class KultTexTractor:
                 menu_number = KultTexTractor.extract_menu_number(line)
                 menu_text = KultTexTractor.extract_menu_text(line)
             elif menu_number and line.strip() and not menu_text:  # menu_text could be on next line - fallback
-                menu_text = line.strip()
+                # menu 3 text is some times at the end of document
+                line = line.strip()
+                is_menu_3 = menu_number == '3'
+                is_vegetarian_menu_text = is_menu_3 and line.endswith('(vegetarisch)')
+
+                if is_vegetarian_menu_text or not is_menu_3:
+                    menu_text = line
 
             if weekday and date and menu_number and menu_text:  # if all information present create menu item
                 item = MenuItem(daily_menu, menu_number, menu_text)

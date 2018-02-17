@@ -10,6 +10,8 @@ class KultTextTractorTestCase(unittest.TestCase):
 
     example_pdf = os.path.join(test_files_root, "menu", "examples", "card.pdf")
     buggy_menu_pdf = os.path.join(test_files_root, "menu", "buggy", "buggy_menu_tue_before_menu3_monday.pdf")
+    friday_no_text_pdf = os.path.join(test_files_root, "menu", "buggy", "friday_no_text_Wochenkarte-KW-6-2018-2.pdf")
+    friday2_no_text_pdf =  os.path.join(test_files_root, "menu", "buggy", "friday_no_text2_Wochenkarte-KW-7-2018.pdf")
 
     def test_get_menu_amount_with_example(self):
         menu = KultTexTractor.get_menu_from_pdf(self.example_pdf)
@@ -73,3 +75,20 @@ class KultTextTractorTestCase(unittest.TestCase):
         self.assertEqual(2, menus[1].get_menu_number())
         self.assertEqual("Herbstlicher Auflauf mit Kürbis (vegetarisch)", menus[2].get_menu_content())
         self.assertEqual(3, menus[2].get_menu_number())
+
+    def test_get_buggy_menu_friday_no_text_content(self):
+        menu = KultTexTractor.get_menu_from_pdf(self.friday_no_text_pdf)
+        daily_menu = menu.get_daily_menus()[4]
+        expected_tuesday_menu_text = "Kartoffel-Gemüse-Pfanne (vegetarisch)"
+        menus = daily_menu.get_menu_items()
+        self.assertEqual(3, menus[2].get_menu_number())
+        self.assertEqual(expected_tuesday_menu_text, menus[2].get_menu_content())
+
+    def test_get_buggy_menu_friday2_no_text_content(self):
+        menu = KultTexTractor.get_menu_from_pdf(self.friday2_no_text_pdf)
+        daily_menu = menu.get_daily_menus()[4]
+        expected_tuesday_menu_text = "Linsencurry mit CousCous (vegetarisch)"
+        menus = daily_menu.get_menu_items()
+        self.assertEqual(3, menus[2].get_menu_number())
+        self.assertEqual(expected_tuesday_menu_text, menus[2].get_menu_content())
+
