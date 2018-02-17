@@ -2,9 +2,12 @@ class MenuItem:
 
     PREFIX = "Menü "
 
-    def __init__(self, daily_menu, menu_number, menu_text):
+    def __init__(self, daily_menu, menu_text, menu_number = None):
         self.daily_menu = daily_menu
-        self.menu_number = int(menu_number)
+        if menu_number:
+            self.menu_number = int(menu_number)
+        else:
+            self.menu_number = len(self.daily_menu.get_menu_items()) + 1
         self.menu_text = menu_text
 
     def get_daily_menu(self):
