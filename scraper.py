@@ -19,7 +19,7 @@ def get_pdf():
 
 def extract_menu_card_link():
     logging.info("Crawl pdf")
-    page = open_url()
+    page = open_url(URL)
     soup = BeautifulSoup(page, "html.parser", parse_only=SoupStrainer('a'))  # parse only links
     menu_card_link = None
     for link in soup:
@@ -33,14 +33,14 @@ def extract_menu_card_link():
     return menu_card_link
 
 
-def open_url():
-    r = Request(URL,
+def open_url(url):
+    r = Request(url,
                 headers={'User-Agent': "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"})
     page = urlopen(r)
     if page.status != 200:
-        print('something wrong with url ' + URL)
-        logging.error("Something wrong with url: " + URL)
-        raise SystemError("Cant open URL: " + URL)
+        print('something wrong with url ' + url)
+        logging.error("Something wrong with url: " + url)
+        raise SystemError("Cant open URL: " + url)
     return page
 
 
