@@ -11,21 +11,25 @@ class DateFormats:
 class KeywordAnalyzer:
 
     FOOD = "essen"
-    NAME = "kult"
     MENU = "menü"
     LUNCH = "mittag"
+
+    KULT = "kult"  # restaurant kult - default
+    KOELLE = "kölle" # restaurant pflanzen koelle
 
     def __init__(self, message):
         self.message = message.lower()
         self.triggers = False
+        self.triggered_word = ''
         self.today = True
         self.relative_day = False
         self.day = ''
         self.date = datetime.date.today().strftime(DateFormats.COMMON)
 
     def analyze(self):
-        self.triggers = self.trigger_word(self.FOOD) or self.trigger_word(self.NAME) or \
-                        self.trigger_word(self.MENU) or self.trigger_word(self.LUNCH)
+        self.triggers = self.trigger_word(self.FOOD) or self.trigger_word(self.KULT) or \
+                        self.trigger_word(self.MENU) or self.trigger_word(self.LUNCH) or \
+                        self.trigger_word(self.KOELLE)
         if self.triggers:
             for day in WEEK_DAYS:
                 if day.lower() in self.message:
@@ -42,9 +46,12 @@ class KeywordAnalyzer:
         return self
 
     def trigger_word(self, keyword):
-        return self.message.startswith(keyword) or \
+        triggered = self.message.startswith(keyword) or \
                self.message.endswith(keyword) or \
                ' ' + keyword in self.message
+        if triggered:
+            self.triggered_word = keyword
+        return triggered
 
     def is_triggered(self):
         return self.triggers

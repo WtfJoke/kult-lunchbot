@@ -14,6 +14,7 @@ class KeywordAnalyzerTestCase(unittest.TestCase):
         self.assertEqual(True, result.is_relative_day())
         self.assertEqual(False, result.is_today())
         self.assertEqual(expected_date, result.get_date())
+        self.assertEqual("kult", result.triggered_word)
 
     def test_analyze_relative_day_yesterday(self):
         result = KeywordAnalyzer("kult gestern").analyze()
@@ -22,6 +23,7 @@ class KeywordAnalyzerTestCase(unittest.TestCase):
         self.assertEqual(True, result.is_relative_day())
         self.assertEqual(False, result.is_today())
         self.assertEqual(expected_date, result.get_date())
+        self.assertEqual("kult", result.triggered_word)
 
     def test_analyze_relative_day_day_after_tomorrow(self):
         result = KeywordAnalyzer("kult übermorgen").analyze()
@@ -30,6 +32,7 @@ class KeywordAnalyzerTestCase(unittest.TestCase):
         self.assertEqual(True, result.is_relative_day())
         self.assertEqual(False, result.is_today())
         self.assertEqual(expected_date, result.get_date())
+        self.assertEqual("kult", result.triggered_word)
 
     def test_analyze_relative_day_day_before_tomorrow(self):
         result = KeywordAnalyzer("kult vorgestern").analyze()
@@ -37,12 +40,21 @@ class KeywordAnalyzerTestCase(unittest.TestCase):
         self.assertEqual(True, result.is_triggered())
         self.assertEqual(True, result.is_relative_day())
         self.assertEqual(expected_date, result.get_date())
+        self.assertEqual("kult", result.triggered_word)
 
     def test_analyze_monday(self):
         result = KeywordAnalyzer("kult montag").analyze()
         self.assertEqual(True, result.is_triggered())
         self.assertEqual(False, result.is_relative_day())
         self.assertEqual('Montag', result.get_day())
+        self.assertEqual("kult", result.triggered_word)
+
+    def test_analyze_monday_koelle(self):
+        result = KeywordAnalyzer("kölle montag").analyze()
+        self.assertEqual(True, result.is_triggered())
+        self.assertEqual(False, result.is_relative_day())
+        self.assertEqual('Montag', result.get_day())
+        self.assertEqual("kölle", result.triggered_word)
 
 
 class WeeklyMenuTestCase(unittest.TestCase):
