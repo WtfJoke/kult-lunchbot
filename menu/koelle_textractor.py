@@ -21,7 +21,8 @@ class KoelleTexTractor:
         header = strong_tag.text
 
         if any(item in header for item in WEEK_DAYS):  # contains weekday
-            match_day = self.DAY_DATE_PATTERN.match(header)  # match 'Montag, 17.02.2018'
+            # match 'Montag, 17.02.2018'
+            match_day = self.DAY_DATE_PATTERN.match(header)
             if match_day:
                 weekday = match_day.group(1)
                 date = match_day.group(2)

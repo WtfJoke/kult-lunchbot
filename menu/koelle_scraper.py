@@ -23,12 +23,12 @@ class KoelleScraper:
 
     @staticmethod
     def find_menu_content(content, extractor):
-        header_to_read = None
+        header = None
         for child in content.children:
             if isinstance(child, Tag):
-                header_to_read = extractor.determine_header_to_read(header_to_read, child.text)
-            elif header_to_read and isinstance(child, NavigableString):
-                extractor.create_menu_entry(header_to_read, child)
+                header = extractor.determine_header_to_read(header, child.text)
+            elif header and isinstance(child, NavigableString):
+                extractor.create_menu_entry(header, child)
 
     @staticmethod
     def find_menu_headers(content, extractor):
