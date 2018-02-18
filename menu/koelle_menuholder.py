@@ -1,10 +1,8 @@
-from menu.kult_textractor import KultTexTractor
-import scraper
+from menu.koelle_scraper import KoelleScraper
 import datetime
 from menu.lunchmenu import DateFormats
 
 current_menu = None
-
 
 def get_menu_text_by_date(date):
     menu = get_current_menu()
@@ -19,18 +17,15 @@ def get_menu_text_by_weekday(weekday):
 
 
 def get_current_menu():
-    if not current_menu:  # create menu if out of date or None
-        create_menu()
-    elif not current_menu.is_current(scraper.get_monday_date()):
+    if not current_menu or not current_menu.is_current(datetime.date.today()):  # create menu if out of date or None
         create_menu()
     return current_menu
 
 
 def create_menu():
-    print("Creating new menu object")
-    pdf = scraper.get_pdf()
     global current_menu
-    current_menu = KultTexTractor.get_menu_from_pdf(pdf)
+    print("Creating new koelle menu object")
+    current_menu = KoelleScraper.scrape()
 
 
 def get_menu_text(daily_menu, menu, date):
