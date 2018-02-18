@@ -7,6 +7,8 @@ class WeeklyMenu:
     def __init__(self):
         self.daily_menus = []
         self.title = ''
+        self.from_date = datetime.date.today()
+        self.to_date = self.from_date + datetime.timedelta(days=6) # usually valid for whole week
 
     def add_daily_menu(self, daily_menu):
         self.daily_menus.append(daily_menu)
@@ -32,8 +34,8 @@ class WeeklyMenu:
     def set_title(self, title):
         self.title = title.strip()
 
-    def is_current(self, param):
-        return True
+    def is_current(self, today):
+        return today <= self.to_date
 
     def __str__(self):
         menu_string = self.title + '\n'
