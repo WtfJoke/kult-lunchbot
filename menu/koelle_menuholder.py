@@ -32,13 +32,15 @@ def get_menu_text(daily_menu, menu, date):
     if daily_menu:
         menu_text = str(daily_menu)
     else:
-        last_menu = menu.get_daily_menus()[len(menu.get_daily_menus()) - 1]
-        if last_menu:
+        no_menus = len(menu.get_daily_menus()) == 0
+        if no_menus:
+            menu_text = "Fehler: Keine Menüs vorhanden"
+        else:
+            last_menu = menu.get_daily_menus()[len(menu.get_daily_menus()) - 1]
             menu_text = 'Sorry ich kann die Menüs von {} nicht finden'.format(str(date)) + '\n'
             menu_text += "Hier ist stattdessen das letzte Menü: \n\n"
             menu_text += str(last_menu)
-        else:
-            menu_text = "Fehler: Keine Menüs vorhanden"
+
     return menu_text
 
 
