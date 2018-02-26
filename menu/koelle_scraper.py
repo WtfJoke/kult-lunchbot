@@ -18,7 +18,8 @@ class KoelleScraper:
 
         p = soup.find_all('p', style="text-align: center;", limit=2)
         header = p[0]
-        content = p[1]
+        possible_content = p[1]
+        content = possible_content if len(possible_content) > 1 else header  # sometimes content is in first paragraph
 
         extractor.weekly_menu().set_title(header.find('strong').text)
         KoelleScraper.find_menu_headers(content, extractor)
