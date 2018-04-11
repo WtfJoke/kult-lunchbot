@@ -32,7 +32,7 @@ def convert_pdf_to_txt_lines(path):
 
 def create_text_converter(resource_manager, string_writer):
     codec = 'utf-8'
-    return TextConverter(resource_manager, string_writer, codec=codec, laparams=LAParams())
+    return TextConverter(resource_manager, string_writer, codec=codec, laparams=LAParams(line_margin=0.1))
 
 
 if __name__ == "__main__":
