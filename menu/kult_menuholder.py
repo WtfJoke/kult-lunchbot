@@ -49,7 +49,11 @@ def get_menu_text(daily_menu, menu, date):
 
 # starter method
 if __name__ == "__main__":
-    print(get_menu_text_by_date(datetime.date.today().strftime(DateFormats.COMMON)))
+    today = datetime.date.today()
+    monday = today - datetime.timedelta(days=today.weekday())
+    for counter in range(0, 5):
+        date = monday + datetime.timedelta(days=counter)
+        print(get_menu_text_by_date(date.strftime(DateFormats.COMMON)))
 
 
 
