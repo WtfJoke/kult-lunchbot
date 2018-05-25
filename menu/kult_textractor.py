@@ -43,6 +43,9 @@ class KultTexTractor:
                     else:
                         next_weekday = match_day.group(1)
                         next_date = match_day.group(2)
+            elif 'eschlossen' in line:
+                daily_menu.set_weekday(next_weekday)
+                daily_menu.set_date(next_date)
             elif 'Menü' in line:
                 menu_number = KultTexTractor.extract_menu_number(line)
                 menu_text = KultTexTractor.extract_menu_text(line)
@@ -97,3 +100,11 @@ class KultTexTractor:
         if matcher:
             menu_number = matcher.group(1)
         return menu_number
+
+
+# starter method
+if __name__ == "__main__":
+    import scraper
+    pdf = scraper.get_pdf()
+    current_menu = KultTexTractor.get_menu_from_pdf(pdf)
+    print(current_menu)
