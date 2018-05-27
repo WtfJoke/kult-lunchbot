@@ -79,28 +79,31 @@ def get_menu_folder():
     return os.path.join(project_root, "resources", "menues")
 
 
-from PyQt5.QtWebEngineWidgets import QWebEnginePage
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import QUrl
-import sys
-
-
-class Page(QWebEnginePage):
-    def __init__(self, url):
-        self.app = QApplication(sys.argv)
-        QWebEnginePage.__init__(self)
-        self.html = ''
-        self.loadFinished.connect(self._on_load_finished)
-        self.load(QUrl(url))
-        self.app.exec_()
-
-    def _on_load_finished(self):
-        self.html = self.toHtml(self.callable)
-        print('Load finished')
-
-    def callable(self, html_str):
-        self.html = html_str
-        self.app.quit()
+# from PyQt5.QtWebEngineWidgets import QWebEnginePage
+# from PyQt5.QtWidgets import QApplication
+# from PyQt5.QtCore import QUrl
+# from pyvirtualdisplay import Display
+# import sys
+#
+#
+# class Page(QWebEnginePage):
+#     def __init__(self, url):
+#         display = Display(visible=0, size=(800, 600))
+#         display.start()
+#         self.app = QApplication(sys.argv)
+#         QWebEnginePage.__init__(self)
+#         self.html = ''
+#         self.loadFinished.connect(self._on_load_finished)
+#         self.load(QUrl(url))
+#         self.app.exec_()
+#
+#     def _on_load_finished(self):
+#         self.html = self.toHtml(self.callable)
+#         print('Load finished')
+#
+#     def callable(self, html_str):
+#         self.html = html_str
+#         self.app.quit()
 
 
 # starter method
