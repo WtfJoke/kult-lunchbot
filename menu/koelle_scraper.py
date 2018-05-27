@@ -5,11 +5,16 @@ from menu.koelle_textractor import KoelleTexTractor
 from PyQt5.QtWebEngineWidgets import QWebEnginePage
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QUrl
+from pyvirtualdisplay import Display
 import sys
+import os
 
 
 class Page(QWebEnginePage):
     def __init__(self, url):
+        if os.name != 'nt':
+            self.display = Display(visible=0, size=(800, 600))
+            self.display.start()
         self.app = QApplication(sys.argv)
         QWebEnginePage.__init__(self)
         self.html = ''
@@ -24,6 +29,8 @@ class Page(QWebEnginePage):
     def callable(self, html_str):
         self.html = html_str
         self.app.quit()
+        if os.name != 'nt':
+            self.display.stop()
 
 
 class KoelleScraper:
