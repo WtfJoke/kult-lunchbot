@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from bs4 import Tag
 from bs4 import NavigableString
 from menu.koelle_textractor import KoelleTexTractor
-import scraper
+from scraper import Page
 
 
 class KoelleScraper:
@@ -11,15 +11,16 @@ class KoelleScraper:
 
     @staticmethod
     def scrape():
-        page = scraper.open_url(KoelleScraper.URL)
+        page = Page(KoelleScraper.URL)
+        html = page.html
 
         extractor = KoelleTexTractor()
-        soup = BeautifulSoup(page, "html.parser")
+        soup = BeautifulSoup(html, "html.parser")
 
         p = soup.find_all('p', style="text-align: center;", limit=2)
         header = p[0]
-        possible_content = p[1]
-        content = possible_content if len(possible_content) > 1 else header  # sometimes content is in first paragraph
+        # wok_content = p[1]
+        content = header
 
         extractor.weekly_menu().set_title(header.find('strong').text)
         KoelleScraper.find_menu_headers(content, extractor)
