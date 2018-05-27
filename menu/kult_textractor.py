@@ -47,8 +47,13 @@ class KultTexTractor:
                 daily_menu.set_weekday(next_weekday)
                 daily_menu.set_date(next_date)
             elif 'Menü' in line:
+                uncompleted_line = line.strip().endswith('|') or line.strip().endswith('und')
+                if uncompleted_line:
+                    next_line = KultTexTractor.get_next_line(line, text_lines)
+                else:
+                    next_line = ''
                 menu_number = KultTexTractor.extract_menu_number(line)
-                menu_text = KultTexTractor.extract_menu_text(line)
+                menu_text = KultTexTractor.extract_menu_text(line, next_line)
             elif menu_number and line.strip() and not menu_text:  # menu_text could be on next line - fallback
                 # menu 3 text is some times at the end of document
                 line = line.strip()
@@ -80,10 +85,15 @@ class KultTexTractor:
         return menu
 
     @staticmethod
-    def extract_menu_text(line):
+    def extract_menu_text(line, next_line):
         replace_string = KultTexTractor.match_menu_line(line)
         if replace_string:  # menu X can be replaced, replace it
             menu_text = line.replace(replace_string.group(), '').strip()
+
+            # if line is uncompleted and has menu on next line, take also next line
+            if next_line:
+                menu_text += ' ' + next_line
+
         else:  # fallback
             menu_text = line
         return menu_text
@@ -100,6 +110,21 @@ class KultTexTractor:
         if matcher:
             menu_number = matcher.group(1)
         return menu_number
+
+    @staticmethod
+    def get_next_line(line, text_lines):
+        counter = 0
+        next_line = ''
+
+        while not next_line:
+            counter = counter + 1
+            next_line = text_lines[text_lines.index(line) + counter].strip()
+            if KultTexTractor.match_menu_line(next_line):
+                next_line = ''
+
+            if counter > 2:
+                break
+        return next_line
 
 
 # starter method
