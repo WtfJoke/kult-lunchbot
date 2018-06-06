@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/WtfJoke/kult-lunchbot.svg?branch=develop)](https://travis-ci.org/WtfJoke/kult-lunchbot)  [![Build status](https://ci.appveyor.com/api/projects/status/pwxgn4mpgrue13mb?svg=true)](https://ci.appveyor.com/project/WtfJoke/kult-lunchbot) 
 [![codecov](https://codecov.io/gh/WtfJoke/kult-lunchbot/branch/develop/graph/badge.svg)](https://codecov.io/gh/WtfJoke/kult-lunchbot) [![Maintainability](https://api.codeclimate.com/v1/badges/4911a6d625e8bc609577/maintainability)](https://codeclimate.com/github/WtfJoke/kult-lunchbot/maintainability)
-[![Python 3](https://pyup.io/repos/github/WtfJoke/kult-lunchbot/python-3-shield.svg)](https://pyup.io/repos/github/WtfJoke/kult-lunchbot/)
 [![Updates](https://pyup.io/repos/github/WtfJoke/kult-lunchbot/shield.svg)](https://pyup.io/repos/github/WtfJoke/kult-lunchbot/) 
 
 # kult-lunchbot [<img src="https://raw.githubusercontent.com/WtfJoke/kult-lunchbot/master/resources/icons/lunchbot_icon_fullbackground.png" width="40" height="40">](https://lunchbot-hn.slack.com/apps/A7YE00YBE-kult-lunchbot?page=1)
