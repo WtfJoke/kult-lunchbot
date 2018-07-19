@@ -2,7 +2,28 @@ from bs4 import BeautifulSoup
 from bs4 import Tag
 from bs4 import NavigableString
 from menu.koelle_textractor import KoelleTexTractor
-import scraper
+from PyQt5.QtWebEngineWidgets import QWebEnginePage
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore import QUrl
+import sys
+
+
+class Page(QWebEnginePage):
+    def __init__(self, url):
+        self.app = QApplication(sys.argv)
+        QWebEnginePage.__init__(self)
+        self.html = ''
+        self.loadFinished.connect(self._on_load_finished)
+        self.load(QUrl(url))
+        self.app.exec_()
+
+    def _on_load_finished(self):
+        self.html = self.toHtml(self.callable)
+        print('Load finished')
+
+    def callable(self, html_str):
+        self.html = html_str
+        self.app.quit()
 
 
 class KoelleScraper:
@@ -11,15 +32,16 @@ class KoelleScraper:
 
     @staticmethod
     def scrape():
-        page = scraper.open_url(KoelleScraper.URL)
+        page = Page(KoelleScraper.URL)
+        html = page.html
 
         extractor = KoelleTexTractor()
-        soup = BeautifulSoup(page, "html.parser")
+        soup = BeautifulSoup(html, "html.parser")
 
         p = soup.find_all('p', style="text-align: center;", limit=2)
         header = p[0]
-        possible_content = p[1]
-        content = possible_content if len(possible_content) > 1 else header  # sometimes content is in first paragraph
+        # wok_content = p[1]
+        content = header
 
         extractor.weekly_menu().set_title(header.find('strong').text)
         KoelleScraper.find_menu_headers(content, extractor)

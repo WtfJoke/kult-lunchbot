@@ -1,4 +1,4 @@
-import os
+
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
@@ -32,8 +32,12 @@ def convert_pdf_to_txt_lines(path):
 
 def create_text_converter(resource_manager, string_writer):
     codec = 'utf-8'
-    return TextConverter(resource_manager, string_writer, codec=codec, laparams=LAParams(line_margin=0.1))
+    return TextConverter(resource_manager, string_writer, codec=codec, laparams=LAParams(char_margin=4))
 
 
 if __name__ == "__main__":
-    print(convert_pdf_to_txt(os.path.join('tests', 'files', 'menu', 'buggy', 'friday_no_text_Wochenkarte-KW-6-2018-2.pdf')))
+    import scraper
+    pdf = scraper.get_pdf()
+    print(convert_pdf_to_txt(pdf))
+    #import os
+    #print(convert_pdf_to_txt(os.path.join('tests', 'files', 'menu', 'buggy', 'friday_no_text_Wochenkarte-KW-6-2018-2.pdf')))

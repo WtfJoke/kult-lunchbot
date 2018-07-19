@@ -4,7 +4,6 @@ A REST API for lunch bot in Python
 import json
 import bot
 from menu import kult_menuholder
-from menu import koelle_menuholder
 from menu.lunchmenu import KeywordAnalyzer, DateFormats
 from flask import Flask, request, make_response, render_template
 import logging
@@ -17,7 +16,6 @@ from googleaction import GoogleActionDialog
 application = Flask(__name__)
 pyBot = bot.Bot()
 kult_menuholder.create_menu()
-# koelle_menuholder.create_menu()
 # set DE in LANG environment variable on server see https://docs.python.org/3.6/library/locale.html
 locale.setlocale(locale.LC_ALL, '')
 
@@ -60,10 +58,7 @@ def slack_event_handler(event_type, slack_event):
         pyBot.append_message(key)
         if analyzer.is_triggered():
             logging.info("Triggered bot")
-            if analyzer.triggered_word != KeywordAnalyzer.KOELLE:
-                menu_holder = kult_menuholder
-            else:
-                menu_holder = koelle_menuholder
+            menu_holder = kult_menuholder
 
             if analyzer.is_today():
                 menu_text = menu_holder.get_menu_text_by_date(datetime.date.today().strftime(DateFormats.COMMON))
