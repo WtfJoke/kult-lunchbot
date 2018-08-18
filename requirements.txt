@@ -11,7 +11,7 @@ MarkupSafe==1.0
 pdfminer.six==20170720
 peewee==3.6.4
 psycopg2-binary==2.7.5
-pycryptodome==3.6.4
+pycryptodome==3.6.6
 PyQt5==5.10.1
 PyYAML==3.13
 requests==2.19.1
