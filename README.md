@@ -47,7 +47,6 @@ Currently supported keywords are:
 * kult
 * menü
 * mittag
-* kölle (for the [menus of Pflanzen Kölle](https://www.pflanzen-koelle.de/standorte/heilbronn/bambusgarten/#karte)
 
 Currently supported date's are:
 * week days
