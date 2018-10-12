@@ -13,7 +13,6 @@ pdfminer.six==20170720
 peewee==3.7.1
 psycopg2-binary==2.7.5
 pycryptodome==3.6.6
-PyQt5==5.11.3
 PyYAML==3.13
 requests==2.19.1
 six==1.11.0
