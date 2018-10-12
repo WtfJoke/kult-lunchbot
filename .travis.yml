@@ -11,8 +11,3 @@ script:
 
 after_success:
   - codecov
-
-addons:
-    apt:
-        packages:
-            - language-pack-de
