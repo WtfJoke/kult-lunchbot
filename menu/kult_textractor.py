@@ -1,5 +1,7 @@
 import os
 import re
+import locale
+from datetime import datetime
 
 from menu.lunchmenu import WEEK_DAYS
 from menu.menuitem import MenuItem
@@ -23,6 +25,8 @@ class KultTexTractor:
 
     @staticmethod
     def analyze_menu_text(text_lines, menu_filename):
+        # set DE in LANG environment variable on server see https://docs.python.org/3.6/library/locale.html
+        locale.setlocale(locale.LC_ALL, '')
         menu = KultWeeklyMenu(menu_filename)
 
         weekday = menu_text = date = next_weekday = next_date = ''
@@ -59,8 +63,9 @@ class KultTexTractor:
                 line = line.strip()
                 is_menu_3 = menu_number == '3'
                 is_vegetarian_menu_text = is_menu_3 and line.endswith('(vegetarisch)')
+                date_weekday = datetime.strptime(date, "%d.%m.%Y").strftime("%A") # get translated week day
 
-                if is_vegetarian_menu_text or not is_menu_3:
+                if is_vegetarian_menu_text or not is_menu_3 or date_weekday == weekday:
                     menu_text = line
 
             if weekday and date and menu_number and menu_text:  # if all information present create menu item

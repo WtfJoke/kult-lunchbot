@@ -11,7 +11,8 @@ class KultTextTractorTestCase(unittest.TestCase):
     example_pdf = os.path.join(test_files_root, "menu", "examples", "card.pdf")
     buggy_menu_pdf = os.path.join(test_files_root, "menu", "buggy", "buggy_menu_tue_before_menu3_monday.pdf")
     friday_no_text_pdf = os.path.join(test_files_root, "menu", "buggy", "friday_no_text_Wochenkarte-KW-6-2018-2.pdf")
-    friday2_no_text_pdf =  os.path.join(test_files_root, "menu", "buggy", "friday_no_text2_Wochenkarte-KW-7-2018.pdf")
+    friday2_no_text_pdf = os.path.join(test_files_root, "menu", "buggy", "friday_no_text2_Wochenkarte-KW-7-2018.pdf")
+    thursday_wrong_veggie_menu_friday_no_menu_pdf = os.path.join(test_files_root, "menu", "buggy", "notworkingfridaywrongthursday_Wochenkarte-KW-41_18.pdf")
 
     def test_get_menu_amount_with_example(self):
         menu = KultTexTractor.get_menu_from_pdf(self.example_pdf)
@@ -87,8 +88,24 @@ class KultTextTractorTestCase(unittest.TestCase):
     def test_get_buggy_menu_friday2_no_text_content(self):
         menu = KultTexTractor.get_menu_from_pdf(self.friday2_no_text_pdf)
         daily_menu = menu.get_daily_menus()[4]
-        expected_tuesday_menu_text = "Linsencurry mit CousCous (vegetarisch)"
+        expected_friday_menu_text = "Linsencurry mit CousCous (vegetarisch)"
         menus = daily_menu.get_menu_items()
         self.assertEqual(3, menus[2].get_menu_number())
-        self.assertEqual(expected_tuesday_menu_text, menus[2].get_menu_content())
+        self.assertEqual(expected_friday_menu_text, menus[2].get_menu_content())
 
+    def test_get_buggy_menu_thursday_wrong_veggie(self):
+        menu = KultTexTractor.get_menu_from_pdf(self.thursday_wrong_veggie_menu_friday_no_menu_pdf)
+        daily_menu = menu.get_daily_menus()[3]
+        expected_thursday_menu_text = "„Bauernpfanne“ mit Kartoffeln und Tomatensauce"
+        menus = daily_menu.get_menu_items()
+        self.assertEqual(3, menus[2].get_menu_number())
+        self.assertEqual(expected_thursday_menu_text, menus[2].get_menu_content())
+
+    def test_get_buggy_menu_thursday_no_friday(self):
+        menu = KultTexTractor.get_menu_from_pdf(self.thursday_wrong_veggie_menu_friday_no_menu_pdf)
+        self.assertEqual(5, len(menu.get_daily_menus()))
+        daily_menu = menu.get_daily_menus()[4]
+        expected_friday_menu_text = "Rigatoni an Gorgonzolasauce  (vegetarisch)"
+        menus = daily_menu.get_menu_items()
+        self.assertEqual(3, menus[2].get_menu_number())
+        self.assertEqual(expected_friday_menu_text, menus[2].get_menu_content())
