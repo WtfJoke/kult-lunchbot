@@ -1,6 +1,6 @@
 import os
 import re
-import locale
+from babel import Locale
 from datetime import datetime
 
 from menu.lunchmenu import WEEK_DAYS
@@ -25,8 +25,6 @@ class KultTexTractor:
 
     @staticmethod
     def analyze_menu_text(text_lines, menu_filename):
-        # set DE in LANG environment variable on server see https://docs.python.org/3.6/library/locale.html
-        locale.setlocale(locale.LC_ALL, '')
         menu = KultWeeklyMenu(menu_filename)
 
         weekday = menu_text = date = next_weekday = next_date = ''
@@ -61,7 +59,8 @@ class KultTexTractor:
             elif menu_number and line.strip() and not menu_text:  # menu_text could be on next line - fallback
                 # menu 3 text is some times at the end of document
                 line = line.strip()
-                date_weekday = datetime.strptime(date, "%d.%m.%Y").strftime("%A") # get translated week day
+                weekday_number = datetime.strptime(date, "%d.%m.%Y").weekday() # get translated week day
+                date_weekday = Locale('de', 'DE').days['format']['wide'][weekday_number]
 
                 if date_weekday == weekday:
                     menu_text = line
