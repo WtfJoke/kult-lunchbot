@@ -61,11 +61,9 @@ class KultTexTractor:
             elif menu_number and line.strip() and not menu_text:  # menu_text could be on next line - fallback
                 # menu 3 text is some times at the end of document
                 line = line.strip()
-                is_menu_3 = menu_number == '3'
-                is_vegetarian_menu_text = is_menu_3 and line.endswith('(vegetarisch)')
                 date_weekday = datetime.strptime(date, "%d.%m.%Y").strftime("%A") # get translated week day
 
-                if is_vegetarian_menu_text or not is_menu_3 or date_weekday == weekday:
+                if date_weekday == weekday:
                     menu_text = line
 
             if weekday and date and menu_number and menu_text:  # if all information present create menu item
