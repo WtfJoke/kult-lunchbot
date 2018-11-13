@@ -64,6 +64,8 @@ def slack_event_handler(event_type, slack_event):
                 menu_text = menu_holder.get_menu_text_by_date(datetime.date.today().strftime(DateFormats.COMMON))
             elif analyzer.is_relative_day():
                 menu_text = menu_holder.get_menu_text_by_date(analyzer.get_date())
+            elif analyzer.is_special():
+                menu_text = "(╯°□°）╯︵ ┻━┻"
             else:
                 menu_text = menu_holder.get_menu_text_by_weekday(analyzer.get_day())
 

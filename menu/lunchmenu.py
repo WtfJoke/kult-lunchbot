@@ -10,12 +10,7 @@ class DateFormats:
 
 class KeywordAnalyzer:
 
-    FOOD = "essen"
-    MENU = "menü"
-    LUNCH = "mittag"
-
-    KULT = "kult"  # restaurant kult - default
-    KOELLE = "kölle" # restaurant pflanzen koelle
+    TRIGGERS = ["essen", "menü", "mittag", "kult", "kölle", "gereizt", ":angry:", ":rage:"]
 
     def __init__(self, message):
         self.message = message.lower()
@@ -25,11 +20,14 @@ class KeywordAnalyzer:
         self.relative_day = False
         self.day = ''
         self.date = datetime.date.today().strftime(DateFormats.COMMON)
+        self.special = False
 
     def analyze(self):
-        self.triggers = self.trigger_word(self.FOOD) or self.trigger_word(self.KULT) or \
-                        self.trigger_word(self.MENU) or self.trigger_word(self.LUNCH) or \
-                        self.trigger_word(self.KOELLE)
+        for trigger in self.TRIGGERS:
+            if self.trigger_word(trigger):
+                self.triggers = True
+                break
+
         if self.triggers:
             for day in WEEK_DAYS:
                 if day.lower() in self.message:
@@ -41,6 +39,10 @@ class KeywordAnalyzer:
                     self.today = False
                     self.relative_day = True
                     self.date = relative_day.get_date()
+                    break
+            for special in Eggs.SPECIALS:
+                if special in self.message:
+                    self.special = True
                     break
 
         return self
@@ -61,6 +63,9 @@ class KeywordAnalyzer:
 
     def is_relative_day(self):
         return self.relative_day
+
+    def is_special(self):
+        return self.special
 
     def get_day(self):
         return self.day
@@ -90,3 +95,7 @@ class RelativeDays:
     DAY_BEFORE_YESTERDAY = RelativeDay("vorgestern", -2)
 
     DAYS = [DAY_AFTER_TOMORROW, TOMORROW, DAY_BEFORE_YESTERDAY, YESTERDAY]
+
+
+class Eggs:
+    SPECIALS = ["gereizt", ":angry:", ":rage:"]
