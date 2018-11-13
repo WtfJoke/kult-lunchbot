@@ -56,6 +56,12 @@ class KeywordAnalyzerTestCase(unittest.TestCase):
         self.assertEqual('Montag', result.get_day())
         self.assertEqual("kölle", result.triggered_word)
 
+    def test_is_special(self):
+        result = KeywordAnalyzer(":zornig:").analyze()
+        self.assertEqual(True, result.is_triggered())
+        self.assertEqual(True, result.is_special())
+        self.assertEqual(False, result.is_relative_day())
+
 
 class WeeklyMenuTestCase(unittest.TestCase):
 

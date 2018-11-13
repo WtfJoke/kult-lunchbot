@@ -2,7 +2,6 @@ import datetime
 
 WEEK_DAYS = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
 
-
 class DateFormats:
     COMMON = "%d.%m.%Y"
     FILE_FORMAT = "%d_%m"
@@ -10,7 +9,7 @@ class DateFormats:
 
 class KeywordAnalyzer:
 
-    TRIGGERS = ["essen", "menü", "mittag", "kult", "kölle", "gereizt", ":angry:", ":rage:"]
+    TRIGGERS = ["essen", "menü", "mittag", "kult", "kölle"]
 
     def __init__(self, message):
         self.message = message.lower()
@@ -21,6 +20,7 @@ class KeywordAnalyzer:
         self.day = ''
         self.date = datetime.date.today().strftime(DateFormats.COMMON)
         self.special = False
+        self.TRIGGERS.extend(Eggs.SPECIALS)
 
     def analyze(self):
         for trigger in self.TRIGGERS:
@@ -98,4 +98,5 @@ class RelativeDays:
 
 
 class Eggs:
-    SPECIALS = ["gereizt", ":angry:", ":rage:"]
+    SPECIALS = ["gereizt", ":angry:", ":rage:", ":wütend:", ":zornig:"]
+
