@@ -66,7 +66,7 @@ def slack_event_handler(event_type, slack_event):
             elif analyzer.is_relative_day():
                 menu_text = menu_holder.get_menu_text_by_date(analyzer.get_date())
             elif analyzer.is_special():
-                menu_text = random.choice["(╯°□°）╯︵ ┻━┻", "(┛◉Д◉)┛彡┻━┻", "(ノಥ,_｣ಥ)ノ彡┻━┻", "(ノ￣皿￣）ノ ⌒=== ┫"]
+                menu_text = random.choice(["(╯°□°）╯︵ ┻━┻", "(┛◉Д◉)┛彡┻━┻", "(ノಥ,_｣ಥ)ノ彡┻━┻", "(ノ￣皿￣）ノ ⌒=== ┫"])
             else:
                 menu_text = menu_holder.get_menu_text_by_weekday(analyzer.get_day())
 
