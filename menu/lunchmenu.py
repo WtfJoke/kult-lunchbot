@@ -42,6 +42,7 @@ class KeywordAnalyzer:
                     break
             for special in Eggs.SPECIALS:
                 if special in self.message:
+                    self.today = False
                     self.special = True
                     break
 
