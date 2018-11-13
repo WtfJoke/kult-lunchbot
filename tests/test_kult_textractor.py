@@ -88,10 +88,9 @@ class KultTextTractorTestCase(unittest.TestCase):
     def test_get_buggy_menu_friday2_no_text_content(self):
         menu = KultTexTractor.get_menu_from_pdf(self.friday2_no_text_pdf)
         daily_menu = menu.get_daily_menus()[4]
-        expected_friday_menu_text = "Linsencurry mit CousCous (vegetarisch)"
+        expected_tuesday_menu_text = "Menü 3 - Linsencurry mit CousCous (vegetarisch)"
         menus = daily_menu.get_menu_items()
-        self.assertEqual(3, menus[2].get_menu_number())
-        self.assertEqual(expected_friday_menu_text, menus[2].get_menu_content())
+        self.assertEqual(expected_tuesday_menu_text, str(menus[2]))
 
     def test_get_buggy_menu_thursday_wrong_veggie(self):
         menu = KultTexTractor.get_menu_from_pdf(self.thursday_wrong_veggie_menu_friday_no_menu_pdf)
