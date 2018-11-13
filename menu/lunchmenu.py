@@ -51,7 +51,7 @@ class KeywordAnalyzer:
     def trigger_word(self, keyword):
         triggered = self.message.startswith(keyword) or \
                self.message.endswith(keyword) or \
-               ' ' + keyword in self.message
+               keyword in self.message
         if triggered:
             self.triggered_word = keyword
         return triggered
@@ -99,5 +99,5 @@ class RelativeDays:
 
 
 class Eggs:
-    SPECIALS = ["gereizt", ":angry:", ":rage:", ":wütend:", ":zornig:"]
+    SPECIALS = ["gereizt", "angry", "rage", "wütend", "zornig"]
 
