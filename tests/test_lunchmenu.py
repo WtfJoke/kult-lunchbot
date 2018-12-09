@@ -67,6 +67,8 @@ class KeywordAnalyzerTestCase(unittest.TestCase):
         result = KeywordAnalyzer('woche').analyze()
         self.assertEqual(True, result.is_triggered())
         self.assertEqual(True, result.is_weekly())
+        self.assertEqual(False, result.is_relative_day())
+        self.assertEqual(False, result.is_today())
 
 
 class WeeklyMenuTestCase(unittest.TestCase):

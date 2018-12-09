@@ -48,6 +48,7 @@ class KeywordAnalyzer:
                     break
             if 'woche' in self.message:
                 self.weekly = True
+                self.today = False
 
         return self
 
