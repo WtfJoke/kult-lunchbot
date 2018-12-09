@@ -1,18 +1,19 @@
+import os
 import unittest
 
 from menu.kult_textractor import KultTexTractor
-import os
 
 
 class KultTextTractorTestCase(unittest.TestCase):
-
     test_files_root = os.path.join(os.path.dirname(os.path.realpath(__file__)), "files")
 
     example_pdf = os.path.join(test_files_root, "menu", "examples", "card.pdf")
     buggy_menu_pdf = os.path.join(test_files_root, "menu", "buggy", "buggy_menu_tue_before_menu3_monday.pdf")
     friday_no_text_pdf = os.path.join(test_files_root, "menu", "buggy", "friday_no_text_Wochenkarte-KW-6-2018-2.pdf")
     friday2_no_text_pdf = os.path.join(test_files_root, "menu", "buggy", "friday_no_text2_Wochenkarte-KW-7-2018.pdf")
-    thursday_wrong_veggie_menu_friday_no_menu_pdf = os.path.join(test_files_root, "menu", "buggy", "notworkingfridaywrongthursday_Wochenkarte-KW-41_18.pdf")
+    thursday_wrong_veggie_menu_friday_no_menu_pdf = os.path.join(test_files_root, "menu", "buggy",
+                                                                 "notworkingfridaywrongthursday_Wochenkarte-KW-41_18.pdf")
+    thursday_next_line_wrong_pdf = os.path.join(test_files_root, "menu", "buggy", "nextline_thu_KW-50-1.pdf")
 
     def test_get_menu_amount_with_example(self):
         menu = KultTexTractor.get_menu_from_pdf(self.example_pdf)
@@ -108,3 +109,12 @@ class KultTextTractorTestCase(unittest.TestCase):
         menus = daily_menu.get_menu_items()
         self.assertEqual(3, menus[2].get_menu_number())
         self.assertEqual(expected_friday_menu_text, menus[2].get_menu_content())
+
+    def test_get_buggy_menu_tuesday_next_line(self):
+        menu = KultTexTractor.get_menu_from_pdf(self.thursday_next_line_wrong_pdf)
+        self.assertEqual(5, len(menu.get_daily_menus()))
+        daily_menu = menu.get_daily_menu_by_weekday("Donnerstag")
+        expected_friday_menu_text = "Kl. Salat I   Gefüllte Hähnchenbrust an Tomaten-Estragonsauce und cremige Polenta"
+        menu_one = daily_menu.get_menu_one()
+        self.assertEqual(1, menu_one.get_menu_number())
+        self.assertEqual(expected_friday_menu_text, menu_one.get_menu_content())

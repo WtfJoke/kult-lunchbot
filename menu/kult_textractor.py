@@ -32,6 +32,7 @@ class KultTexTractor:
         menu_number = 0
 
         for line in text_lines:
+            strippedLine = line.strip()
             if 'KW' in line:
                 menu.set_title(line)
             elif any(item in line for item in WEEK_DAYS):  # begins line with monday-friday
@@ -49,16 +50,17 @@ class KultTexTractor:
                 daily_menu.set_weekday(next_weekday)
                 daily_menu.set_date(next_date)
             elif 'Menü' in line:
-                uncompleted_line = line.strip().endswith('|') or line.strip().endswith('und')
+                uncompleted_line = strippedLine.endswith('|') or strippedLine.endswith('und') \
+                                   or strippedLine.endswith('-')
                 if uncompleted_line:
                     next_line = KultTexTractor.get_next_line(line, text_lines)
                 else:
                     next_line = ''
                 menu_number = KultTexTractor.extract_menu_number(line)
                 menu_text = KultTexTractor.extract_menu_text(line, next_line)
-            elif menu_number and line.strip() and not menu_text:  # menu_text could be on next line - fallback
+            elif menu_number and strippedLine and not menu_text:  # menu_text could be on next line - fallback
                 # menu 3 text is some times at the end of document
-                line = line.strip()
+                line = strippedLine
                 weekday_number = datetime.strptime(date, "%d.%m.%Y").weekday() # get translated week day
                 date_weekday = Locale('de', 'DE').days['format']['wide'][weekday_number]
 
@@ -94,7 +96,7 @@ class KultTexTractor:
 
             # if line is uncompleted and has menu on next line, take also next line
             if next_line:
-                menu_text += ' ' + next_line
+                menu_text += next_line
 
         else:  # fallback
             menu_text = line
