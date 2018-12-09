@@ -9,7 +9,7 @@ class DateFormats:
 
 class KeywordAnalyzer:
 
-    TRIGGERS = ["essen", "menü", "mittag", "kult", "kölle"]
+    TRIGGERS = ["essen", "menü", "mittag", "kult", "kölle", "woche"]
 
     def __init__(self, message):
         self.message = message.lower()
@@ -21,6 +21,7 @@ class KeywordAnalyzer:
         self.date = datetime.date.today().strftime(DateFormats.COMMON)
         self.special = False
         self.TRIGGERS.extend(Eggs.SPECIALS)
+        self.weekly = False
 
     def analyze(self):
         for trigger in self.TRIGGERS:
@@ -45,6 +46,8 @@ class KeywordAnalyzer:
                     self.today = False
                     self.special = True
                     break
+            if 'woche' in self.message:
+                self.weekly = True
 
         return self
 
@@ -67,6 +70,9 @@ class KeywordAnalyzer:
 
     def is_special(self):
         return self.special
+
+    def is_weekly(self):
+        return self.weekly
 
     def get_day(self):
         return self.day
