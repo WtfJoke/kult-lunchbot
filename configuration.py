@@ -34,7 +34,7 @@ class Config:
     @staticmethod
     def load_from_file(filename):
         with open(filename, 'r') as yml_file:
-            cfg = yaml.load(yml_file)
+            cfg = yaml.safe_load(yml_file)
         Config.load_db_config(cfg)
         Config.load_sti_api_config(cfg)
         logging.info("Set environment-variables successfully")
