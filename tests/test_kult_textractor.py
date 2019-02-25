@@ -14,6 +14,7 @@ class KultTextTractorTestCase(unittest.TestCase):
     thursday_wrong_veggie_menu_friday_no_menu_pdf = os.path.join(test_files_root, "menu", "buggy",
                                                                  "notworkingfridaywrongthursday_Wochenkarte-KW-41_18.pdf")
     thursday_next_line_wrong_pdf = os.path.join(test_files_root, "menu", "buggy", "nextline_thu_KW-50-1.pdf")
+    four_menus_tuesday_pdf =  os.path.join(test_files_root, "menu", "buggy", "4menus_tuesday.pdf")
 
     def test_get_menu_amount_with_example(self):
         menu = KultTexTractor.get_menu_from_pdf(self.example_pdf)
@@ -118,3 +119,12 @@ class KultTextTractorTestCase(unittest.TestCase):
         menu_one = daily_menu.get_menu_one()
         self.assertEqual(1, menu_one.get_menu_number())
         self.assertEqual(expected_friday_menu_text, menu_one.get_menu_content())
+
+    def test_get_4_menues_tuesday_dont_mess_up_other_days(self):
+        menu = KultTexTractor.get_menu_from_pdf(self.four_menus_tuesday_pdf)
+        self.assertEqual(5, len(menu.get_daily_menus()))
+        daily_menu = menu.get_daily_menu_by_weekday("Mittwoch")
+        menu_three = daily_menu.get_menu_three()
+        expected_text = "Penne Arrabiata  (vegetarisch)"
+        self.assertEqual(3, menu_three.get_menu_number())
+        self.assertEqual(expected_text, menu_three.get_menu_content())

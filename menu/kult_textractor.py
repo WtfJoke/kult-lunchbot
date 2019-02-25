@@ -46,6 +46,9 @@ class KultTexTractor:
                     else:
                         next_weekday = match_day.group(1)
                         next_date = match_day.group(2)
+                    # reset text if for some reasons more than 3 menus are red in one day
+                    menu_text = ''
+                    menu_number = 0
             elif 'eschlossen' in line:
                 daily_menu.set_weekday(next_weekday)
                 daily_menu.set_date(next_date)
