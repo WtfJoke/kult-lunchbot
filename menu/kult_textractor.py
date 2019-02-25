@@ -58,7 +58,7 @@ class KultTexTractor:
                     next_line = ''
                 menu_number = KultTexTractor.extract_menu_number(line)
                 menu_text = KultTexTractor.extract_menu_text(line, next_line)
-            elif menu_number and strippedLine and not menu_text:  # menu_text could be on next line - fallback
+            elif menu_number and strippedLine and date and not menu_text:  # menu_text could be on next line - fallback
                 # menu 3 text is some times at the end of document
                 line = strippedLine
                 weekday_number = datetime.strptime(date, "%d.%m.%Y").weekday() # get translated week day
