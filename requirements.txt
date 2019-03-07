@@ -10,7 +10,7 @@ itsdangerous==1.1.0
 Jinja2==2.10
 MarkupSafe==1.1.1
 pdfminer.six==20181108
-peewee==3.9.1
+peewee==3.9.2
 psycopg2-binary==2.7.7
 pycryptodome==3.7.3
 PyYAML==3.13
