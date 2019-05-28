@@ -4,6 +4,7 @@ from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
 from io import StringIO
+from customtextconverter import CustomTextConverter
 
 
 def convert_pdf_to_txt(path):
@@ -32,7 +33,7 @@ def convert_pdf_to_txt_lines(path):
 
 def create_text_converter(resource_manager, string_writer):
     codec = 'utf-8'
-    return TextConverter(resource_manager, string_writer, codec=codec, laparams=LAParams(char_margin=4))
+    return CustomTextConverter(resource_manager, string_writer, codec=codec, laparams=LAParams(char_margin=4))
 
 
 if __name__ == "__main__":
