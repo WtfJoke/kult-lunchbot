@@ -1,10 +1,10 @@
 
-from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-from pdfminer.converter import TextConverter
-from pdfminer.layout import LAParams
-from pdfminer.pdfpage import PDFPage
 from io import StringIO
-from customtextconverter import CustomTextConverter
+
+from pdfminer.converter import PDFPageAggregator
+from pdfminer.layout import LAParams, LTTextBox, LTTextLine, LTFigure
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+from pdfminer.pdfpage import PDFPage
 
 
 def convert_pdf_to_txt(path):
@@ -17,6 +17,8 @@ def convert_pdf_to_txt(path):
 
             for page in PDFPage.get_pages(pdf_file, maxpages=1):
                 interpreter.process_page(page)
+                layout = device.get_result()
+                parse_layout(layout)
 
             pdf_text = string_writer.getvalue()
     finally:
@@ -33,7 +35,18 @@ def convert_pdf_to_txt_lines(path):
 
 def create_text_converter(resource_manager, string_writer):
     codec = 'utf-8'
-    return CustomTextConverter(resource_manager, string_writer, codec=codec, laparams=LAParams(char_margin=4))
+    return PDFPageAggregator(resource_manager, laparams=LAParams(char_margin=4))
+
+
+def parse_layout(layout):
+    """Function to recursively parse the layout tree."""
+    for lt_obj in layout:
+        print(lt_obj.__class__.__name__)
+        print(lt_obj.bbox)
+        if isinstance(lt_obj, LTTextBox) or isinstance(lt_obj, LTTextLine):
+            print(lt_obj.get_text())
+        elif isinstance(lt_obj, LTFigure):
+            parse_layout(lt_obj)  # Recursive
 
 
 if __name__ == "__main__":
