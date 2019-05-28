@@ -39,14 +39,14 @@ def create_text_converter(resource_manager, string_writer):
 
 
 def parse_layout(layout):
-    """Function to recursively parse the layout tree."""
     for lt_obj in layout:
-        print(lt_obj.__class__.__name__)
-        print(lt_obj.bbox)
         if isinstance(lt_obj, LTTextBox) or isinstance(lt_obj, LTTextLine):
-            print(lt_obj.get_text())
+            text = lt_obj.get_text()
+            if text.strip():
+                print(lt_obj.bbox)
+                print(text)
         elif isinstance(lt_obj, LTFigure):
-            parse_layout(lt_obj)  # Recursive
+            parse_layout(lt_obj)
 
 
 if __name__ == "__main__":
@@ -55,3 +55,5 @@ if __name__ == "__main__":
     print(convert_pdf_to_txt(pdf))
     #import os
     #print(convert_pdf_to_txt(os.path.join('tests', 'files', 'menu', 'buggy', 'friday_no_text_Wochenkarte-KW-6-2018-2.pdf')))
+
+
