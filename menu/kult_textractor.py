@@ -1,8 +1,5 @@
 import os
 import re
-from datetime import datetime
-
-from babel import Locale
 
 from menu.dailymenu import KultDailyMenu
 from menu.lunchmenu import WEEK_DAYS
@@ -27,14 +24,11 @@ class KultTexTractor:
     def analyze_menu_text(text_lines, menu_filename):
         menu = KultWeeklyMenu(menu_filename)
 
-        weekday = menu_text = date = next_weekday = next_date = ''
+        next_weekday = next_date = ''
         daily_menu = KultDailyMenu()
-        menu_number = 0
 
         for positioned_text in text_lines:
             line = positioned_text.text
-            strippedLine = line.strip()
-            next_positioned_text = KultTexTractor.get_next_line(positioned_text, text_lines)
 
             if 'KW' in line:
                 menu.set_title(line)
@@ -49,58 +43,35 @@ class KultTexTractor:
                     else:
                         next_weekday = match_day.group(1)
                         next_date = match_day.group(2)
-                    # reset text if for some reasons more than 3 menus are red in one day
-                    menu_text = ''
-                    menu_number = 0
             elif 'eschlossen' in line:
                 daily_menu.set_weekday(next_weekday)
                 daily_menu.set_date(next_date)
             elif 'Menü' in line:
                 menu_number = KultTexTractor.extract_menu_number(line)
-                first_menu_text_line = KultTexTractor.remove_menu_prefix(line)
-                uncompleted_line = strippedLine.endswith('|') or strippedLine.endswith('und') \
-                                   or strippedLine.endswith('-')
-                if uncompleted_line:
-                    next_line = KultTexTractor.get_next_line(positioned_text, text_lines)
+                positioned_text.text = KultTexTractor.remove_menu_prefix(line)
 
-                    if next_line:
-                        first_menu_text_line += " " + next_line.text.strip()
-                menu_text = KultTexTractor.concat_menu_texts(first_menu_text_line, positioned_text,
-                                                             next_positioned_text, text_lines)
-                if not menu_text:  # text could be on previous lines
-                    index = text_lines.index(positioned_text)
-                    menu_text = text_lines[index - 2].text.strip() + " " + \
-                                text_lines[index - 1].text.strip()
+                item = MenuItem(daily_menu, '', menu_number)
+                KultTexTractor.fill_menu_item(positioned_text, text_lines, item)
 
-            elif menu_number and strippedLine and date and not menu_text:  # menu_text could be on next line - fallback
-                # menu 3 text is some times at the end of document
-                line = strippedLine
-                weekday_number = datetime.strptime(date, "%d.%m.%Y").weekday()  # get translated week day
-                date_weekday = Locale('de', 'DE').days['format']['wide'][weekday_number]
-
-                if date_weekday == weekday:
-                    menu_text = line
-
-            if weekday and date and menu_number and menu_text:  # if all information present create menu item
-                item = MenuItem(daily_menu, menu_text)
                 daily_menu.add_menu_item(item)
-                menu_number = 0
-                menu_text = ''
 
                 if daily_menu.is_complete():
+
                     menu.add_daily_menu(daily_menu)
-                    date = ''
                     daily_menu = KultDailyMenu()
 
                     if next_weekday or next_date:
                         daily_menu.set_weekday(next_weekday)
                         daily_menu.set_date(next_date)
-                        date = next_date
-                        weekday = next_weekday
                         next_weekday = ''
                         next_date = ''
 
         return menu
+
+    @staticmethod
+    def next_line_is_day( positioned_text, text_lines):
+        next_positioned_text = KultTexTractor.get_next_line(positioned_text, text_lines)
+        return any(item in next_positioned_text.text for item in WEEK_DAYS)
 
     @staticmethod
     def remove_menu_prefix(line):
@@ -109,6 +80,43 @@ class KultTexTractor:
         if replace_string:  # menu X can be replaced, replace it
             menu_text = line.replace(replace_string.group(), '').strip()
         return menu_text
+
+    @staticmethod
+    def fill_menu_item(positioned_text, text_lines, menu_item):
+        current_positioned_text = positioned_text
+        # not menu and not begins line with monday-friday:
+        while "Menü" not in current_positioned_text.text and not \
+                any(item in current_positioned_text.text for item in WEEK_DAYS):
+
+            if "Kl. Salat" in current_positioned_text.text:
+                menu_item.set_salad(True)
+                current_positioned_text.text = current_positioned_text.text \
+                    .replace("Kl. Salat", "") \
+                    .replace("|", "") \
+                    .replace(" I ", " ").strip()
+
+            if "Dessert" in current_positioned_text.text:
+                menu_item.set_dessert(True)
+                current_positioned_text.text = current_positioned_text.text \
+                    .replace("IDessert", "") \
+                    .replace("Dessert", "") \
+                    .replace("|", "") \
+                    .replace(" I ", " ").strip()
+
+            is_price_match = re.compile('.*(\\d,\\d\\d).*').match(current_positioned_text.text)
+            if is_price_match:
+                price = is_price_match.group(1)
+                menu_item.set_price(price)
+                current_positioned_text.text = current_positioned_text.text.replace(price, "")
+
+            is_friday_and_last_menu = menu_item.daily_menu.get_weekday() == WEEK_DAYS[4] and menu_item.menu_number == 3
+            text_to_add = current_positioned_text.text.strip()
+            menu_item.add_menu_text(current_positioned_text.text.strip())
+
+            if is_friday_and_last_menu:  # stop reading bottom text like dailysoup
+                break
+
+            current_positioned_text = KultTexTractor.get_next_line(current_positioned_text, text_lines)
 
     @staticmethod
     def concat_menu_texts(menu_text, positioned_text, next_positioned_text, text_lines):

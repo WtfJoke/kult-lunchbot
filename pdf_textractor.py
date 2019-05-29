@@ -33,7 +33,7 @@ def convert_pdf_to_txt(path):
     finally:
         if device:
             device.close()
-    return sorted(positioned_texts, key=lambda text: text.y_max, reverse=True)
+    return sorted(positioned_texts, key=lambda text: text.y_min, reverse=True)
 
 
 def convert_pdf_to_txt_lines(path):

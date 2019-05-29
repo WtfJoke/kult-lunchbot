@@ -64,4 +64,4 @@ class KultDailyMenu(DailyMenu):
         return self.menu3
 
     def is_complete(self):
-        return len(self.menus) == 3
+        return self.menu1 and self.menu2 and self.menu3
