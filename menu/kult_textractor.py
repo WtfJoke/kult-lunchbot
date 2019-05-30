@@ -32,8 +32,10 @@ class KultTexTractor:
 
             if 'KW' in line:
                 menu.set_title(line)
-            elif KultTexTractor.is_week_day(line):  # begins line with monday-friday
-                match_day = KultTexTractor.DAY_DATE_PATTERN.match(line)  # match 'Montag 06.11.2017'
+            # begins line with monday-friday
+            elif KultTexTractor.is_week_day(line):
+                match_day = KultTexTractor.DAY_DATE_PATTERN.match(line)
+                # match 'Montag 06.11.2017'
                 if match_day:
                     if not daily_menu.get_date():
                         weekday = match_day.group(1)
@@ -113,11 +115,12 @@ class KultTexTractor:
                 menu_item.set_price(price)
                 current_positioned_text.text = current_positioned_text.text.replace(price, "")
 
-            is_friday_and_last_menu = menu_item.daily_menu.get_weekday() == WEEK_DAYS[4] and menu_item.menu_number == 3
-            text_to_add = current_positioned_text.text.strip()
             menu_item.add_menu_text(current_positioned_text.text.strip())
 
-            if is_friday_and_last_menu:  # stop reading bottom text like dailysoup
+            is_friday = menu_item.daily_menu.get_weekday() == WEEK_DAYS[4]
+            is_friday_and_last_menu = is_friday and menu_item.menu_number == 3
+            if is_friday_and_last_menu:
+                # stop reading bottom text like dailysoup
                 break
 
             current_positioned_text = KultTexTractor.get_next_line(current_positioned_text, text_lines)
