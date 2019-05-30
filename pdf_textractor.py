@@ -47,16 +47,20 @@ def create_text_converter(resource_manager):
 
 def parse_layout(layout):
     positioned_texts = []
-    for lt_obj in layout:
-        if isinstance(lt_obj, LTTextBox):
-            for line in lt_obj:
-                if isinstance(line, LTTextLine):
-                    text = line.get_text()
-                    if text.strip():
-                        positioned_texts.append(PositionedText(text, line.bbox))
-        elif isinstance(lt_obj, LTFigure):
-            parse_layout(lt_obj)
+    for textbox in layout:
+        if isinstance(textbox, LTTextBox):
+            parse_textboxes(positioned_texts, textbox)
+        elif isinstance(textbox, LTFigure):
+            parse_layout(textbox)
     return positioned_texts
+
+
+def parse_textboxes(positioned_texts, textbox):
+    for line in textbox:
+        if isinstance(line, LTTextLine):
+            text = line.get_text()
+            if text.strip():
+                positioned_texts.append(PositionedText(text, line.bbox))
 
 
 if __name__ == "__main__":
@@ -64,5 +68,3 @@ if __name__ == "__main__":
 
     pdf = scraper.get_pdf()
     print(convert_pdf_to_txt(pdf))
-    # import os
-    # print(convert_pdf_to_txt(os.path.join('tests', 'files', 'menu', 'buggy', 'friday_no_text_Wochenkarte-KW-6-2018-2.pdf')))

@@ -129,7 +129,8 @@ class KultTexTractor:
     @staticmethod
     def extract_menu_text(line, next_line):
         menu_text = KultTexTractor.remove_menu_prefix(line)
-        if menu_text and next_line:  # if line is uncompleted and has menu on next line, take also next line
+        # if line is uncompleted and has menu on next line, take also next line
+        if menu_text and next_line:
             menu_text += next_line
         else:  # fallback
             menu_text = line
