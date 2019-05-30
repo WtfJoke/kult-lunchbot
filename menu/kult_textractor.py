@@ -32,7 +32,7 @@ class KultTexTractor:
 
             if 'KW' in line:
                 menu.set_title(line)
-            elif any(item in line for item in WEEK_DAYS):  # begins line with monday-friday
+            elif KultTexTractor.is_week_day(line):  # begins line with monday-friday
                 match_day = KultTexTractor.DAY_DATE_PATTERN.match(line)  # match 'Montag 06.11.2017'
                 if match_day:
                     if not daily_menu.get_date():
@@ -69,9 +69,13 @@ class KultTexTractor:
         return menu
 
     @staticmethod
+    def is_week_day(line):
+        return any(item in line for item in WEEK_DAYS)
+
+    @staticmethod
     def next_line_is_day(positioned_text, text_lines):
         next_positioned_text = KultTexTractor.get_next_line(positioned_text, text_lines)
-        return any(item in next_positioned_text.text for item in WEEK_DAYS)
+        return KultTexTractor.is_week_day(next_positioned_text.text)
 
     @staticmethod
     def remove_menu_prefix(line):
@@ -86,7 +90,7 @@ class KultTexTractor:
         current_positioned_text = positioned_text
         # not menu and not begins line with monday-friday:
         while "Menü" not in current_positioned_text.text and not \
-                any(item in current_positioned_text.text for item in WEEK_DAYS):
+                KultTexTractor.is_week_day(current_positioned_text.text):
 
             if "Kl. Salat" in current_positioned_text.text:
                 menu_item.set_salad(True)
