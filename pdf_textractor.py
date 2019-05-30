@@ -49,18 +49,16 @@ def parse_layout(layout):
     positioned_texts = []
     for textbox in layout:
         if isinstance(textbox, LTTextBox):
-            parse_textboxes(positioned_texts, textbox)
+            parse_textbox(positioned_texts, textbox)
         elif isinstance(textbox, LTFigure):
             parse_layout(textbox)
     return positioned_texts
 
 
-def parse_textboxes(positioned_texts, textbox):
+def parse_textbox(positioned_texts, textbox):
     for line in textbox:
-        if isinstance(line, LTTextLine):
-            text = line.get_text()
-            if text.strip():
-                positioned_texts.append(PositionedText(text, line.bbox))
+        if isinstance(line, LTTextLine) and line.get_text().strip():
+            positioned_texts.append(PositionedText(line.get_text(), line.bbox))
 
 
 if __name__ == "__main__":

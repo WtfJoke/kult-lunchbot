@@ -69,7 +69,7 @@ class KultTexTractor:
         return menu
 
     @staticmethod
-    def next_line_is_day( positioned_text, text_lines):
+    def next_line_is_day(positioned_text, text_lines):
         next_positioned_text = KultTexTractor.get_next_line(positioned_text, text_lines)
         return any(item in next_positioned_text.text for item in WEEK_DAYS)
 
